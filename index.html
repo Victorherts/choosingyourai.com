@@ -24,6 +24,14 @@ header { background: #fff; border-bottom: 1px solid #e0e0e0; padding: 12px 24px;
 .filter-btn:hover { background: #f0f0f0; }
 .sort-btn { margin-left: auto; padding: 8px 16px; border-radius: 20px; background: #1a1a1a; color: #fff; border: none; font-size: 13px; cursor: pointer; }
 
+/* Dropdown */
+.dropdown { position: relative; }
+.dropdown-menu { display: none; position: absolute; top: 100%; left: 0; margin-top: 4px; background: #fff; border: 1px solid #d0d0d0; border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,.1); min-width: 260px; z-index: 20; padding: 6px 0; }
+.dropdown-menu.open { display: block; }
+.dropdown-item { padding: 8px 14px; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+.dropdown-item:hover { background: #f5f7fa; }
+.dropdown-item.selected { background: #e8f4fd; color: #0969b0; font-weight: 600; }
+
 /* Grid */
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px; padding: 24px; }
 
@@ -70,7 +78,10 @@ header { background: #fff; border-bottom: 1px solid #e0e0e0; padding: 12px 24px;
   <div class="filters">
     <button class="filter-btn" aria-label="Filter by job family">Job family ▾</button>
     <button class="filter-btn" aria-label="Filter by data classification">Data classification ▾</button>
-    <button class="filter-btn" aria-label="Filter by category">Categories ▾</button>
+    <div class="dropdown" id="catDropdown">
+      <button class="filter-btn" id="catBtn" aria-label="Filter by category">Categories ▾</button>
+      <div class="dropdown-menu" id="catMenu"></div>
+    </div>
     <button class="sort-btn" id="sortBtn">Sort by: Best Match ▾</button>
   </div>
 </div>
@@ -79,11 +90,11 @@ header { background: #fff; border-bottom: 1px solid #e0e0e0; padding: 12px 24px;
 
 <script>
 const tools = [
-  { name:"ChatGPT", rating:4.7, reviews:12840, views:"1.2M", desc:"ChatGPT is an AI chatbot by OpenAI that can generate text, answer questions, write code, create content, and assist with a wide range of tasks using natural language.", tags:["AI Chatbot","Text Generation","Code Assistant","Content Creation","Research"], verified:true },
-  { name:"Canva", rating:4.6, reviews:8920, views:"890K", desc:"Canva is a graphic design platform that uses AI to help you create stunning visuals, presentations, social media posts, and marketing materials with ease.", tags:["Design","AI Image Generation","Marketing","Social Media","Presentations"], verified:true },
-  { name:"DeepSeek", rating:4.4, reviews:3200, views:"320K", desc:"DeepSeek is an open-source AI model offering advanced reasoning, coding, and math capabilities rivaling top proprietary models at a fraction of the cost.", tags:["AI Chatbot","Open Source","Code Assistant","Research","Reasoning"], verified:false },
-  { name:"Google Gemini", rating:4.5, reviews:6750, views:"680K", desc:"Google Gemini is a multimodal AI assistant that can understand text, images, audio, and video, integrated across Google products for search, coding, and creativity.", tags:["AI Chatbot","Multimodal","Search","Code Assistant","Productivity"], verified:true },
-  { name:"Microsoft Copilot", rating:4.3, reviews:5400, views:"520K", desc:"Microsoft Copilot is an AI assistant embedded across Microsoft 365 apps, helping with writing, data analysis, presentations, and coding in VS Code and GitHub.", tags:["Productivity","Code Assistant","Writing","Data Analysis","Office Suite"], verified:true }
+  { name:"ChatGPT", rating:4.7, reviews:12840, views:"1.2M", desc:"ChatGPT is an AI chatbot by OpenAI that can generate text, answer questions, write code, create content, and assist with a wide range of tasks using natural language.", tags:["Writing & Content Creation","Coding & Developer Tools","Chatbots & Conversational AI","Education & Study Tools","Productivity & Automation"], verified:true },
+  { name:"Canva", rating:4.6, reviews:8920, views:"890K", desc:"Canva is a graphic design platform that uses AI to help you create stunning visuals, presentations, social media posts, and marketing materials with ease.", tags:["Image Generation & Design","Video Creation & Editing","Marketing & SEO","Productivity & Automation"], verified:true },
+  { name:"DeepSeek", rating:4.4, reviews:3200, views:"320K", desc:"DeepSeek is an open-source AI model offering advanced reasoning, coding, and math capabilities rivaling top proprietary models at a fraction of the cost.", tags:["Chatbots & Conversational AI","Coding & Developer Tools","Education & Study Tools"], verified:false },
+  { name:"Google Gemini", rating:4.5, reviews:6750, views:"680K", desc:"Google Gemini is a multimodal AI assistant that can understand text, images, audio, and video, integrated across Google products for search, coding, and creativity.", tags:["Chatbots & Conversational AI","Coding & Developer Tools","Writing & Content Creation","Productivity & Automation"], verified:true },
+  { name:"Microsoft Copilot", rating:4.3, reviews:5400, views:"520K", desc:"Microsoft Copilot is an AI assistant embedded across Microsoft 365 apps, helping with writing, data analysis, presentations, and coding in VS Code and GitHub.", tags:["Productivity & Automation","Coding & Developer Tools","Writing & Content Creation","Jobs, CV & Career Tools"], verified:true }
 ];
 
 function starsHTML(rating) {
@@ -122,10 +133,36 @@ function renderCards(list) {
   `).join('');
 }
 
-document.getElementById('search').addEventListener('input', e => {
-  const q = e.target.value.toLowerCase();
-  renderCards(q ? tools.filter(t => t.name.toLowerCase().includes(q) || t.desc.toLowerCase().includes(q)) : tools);
+const categories = ["Writing & Content Creation","Jobs, CV & Career Tools","Image Generation & Design","Video Creation & Editing","Productivity & Automation","Coding & Developer Tools","Marketing & SEO","Education & Study Tools","Chatbots & Conversational AI","Audio, Voice & Music AI"];
+const selectedCats = new Set();
+const catMenu = document.getElementById('catMenu');
+const catBtn = document.getElementById('catBtn');
+
+catMenu.innerHTML = categories.map(c => `<div class="dropdown-item" data-cat="${c}">${c}</div>`).join('');
+
+catBtn.addEventListener('click', e => { e.stopPropagation(); catMenu.classList.toggle('open'); });
+document.addEventListener('click', () => catMenu.classList.remove('open'));
+catMenu.addEventListener('click', e => { e.stopPropagation(); });
+
+catMenu.querySelectorAll('.dropdown-item').forEach(item => {
+  item.addEventListener('click', () => {
+    const cat = item.dataset.cat;
+    selectedCats.has(cat) ? selectedCats.delete(cat) : selectedCats.add(cat);
+    item.classList.toggle('selected');
+    catBtn.textContent = selectedCats.size ? `Categories (${selectedCats.size}) ▾` : 'Categories ▾';
+    filterAndRender();
+  });
 });
+
+function filterAndRender() {
+  const q = document.getElementById('search').value.toLowerCase();
+  let filtered = tools;
+  if (q) filtered = filtered.filter(t => t.name.toLowerCase().includes(q) || t.desc.toLowerCase().includes(q));
+  if (selectedCats.size) filtered = filtered.filter(t => t.tags.some(tag => selectedCats.has(tag)));
+  renderCards(filtered);
+}
+
+document.getElementById('search').addEventListener('input', filterAndRender);
 
 document.getElementById('sortBtn').addEventListener('click', () => {
   const sorted = [...tools].sort((a, b) => b.rating - a.rating);
