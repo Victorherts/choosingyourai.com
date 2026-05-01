@@ -17,6 +17,8 @@ header { background: #fff; border-bottom: 1px solid #e0e0e0; padding: 12px 24px;
 
 /* Toolbar */
 .toolbar { padding: 16px 24px; background: #fff; border-bottom: 1px solid #e0e0e0; }
+.tool-count { font-size: 22px; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+.tool-count .badge { font-size: 13px; font-weight: 400; background: #eef1f5; padding: 4px 10px; border-radius: 12px; }
 .filters { display: flex; gap: 10px; align-items: center; }
 .filter-btn { padding: 6px 14px; border: 1px solid #d0d0d0; border-radius: 6px; background: #fff; font-size: 13px; cursor: pointer; }
 .filter-btn:hover { background: #f0f0f0; }
@@ -65,7 +67,10 @@ header { background: #fff; border-bottom: 1px solid #e0e0e0; padding: 12px 24px;
 </header>
 
 <div class="toolbar">
+  <div class="tool-count"><span id="count">5</span> AI Tools <span class="badge">Only show recommended tools</span></div>
   <div class="filters">
+    <button class="filter-btn" aria-label="Filter by job family">Job family ▾</button>
+    <button class="filter-btn" aria-label="Filter by data classification">Data classification ▾</button>
     <button class="filter-btn" aria-label="Filter by category">Categories ▾</button>
     <button class="sort-btn" id="sortBtn">Sort by: Best Match ▾</button>
   </div>
