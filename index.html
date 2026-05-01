@@ -91,14 +91,8 @@ header { background: rgba(255,255,255,.85); backdrop-filter: blur(12px); border-
 
 <main class="grid" id="grid"></main>
 
+<script src="tools.js"></script>
 <script>
-const tools = [
-  { name:"ChatGPT", rating:4.7, reviews:12840, views:"1.2M", desc:"ChatGPT is an AI chatbot by OpenAI that can generate text, answer questions, write code, create content, and assist with a wide range of tasks using natural language.", tags:["Writing & Content Creation","Coding & Developer Tools","Chatbots & Conversational AI","Education & Study Tools","Productivity & Automation"] },
-  { name:"Canva", rating:4.6, reviews:8920, views:"890K", desc:"Canva is a graphic design platform that uses AI to help you create stunning visuals, presentations, social media posts, and marketing materials with ease.", tags:["Image Generation & Design","Video Creation & Editing","Marketing & SEO","Productivity & Automation"] },
-  { name:"DeepSeek", rating:4.4, reviews:3200, views:"320K", desc:"DeepSeek is an open-source AI model offering advanced reasoning, coding, and math capabilities rivaling top proprietary models at a fraction of the cost.", tags:["Chatbots & Conversational AI","Coding & Developer Tools","Education & Study Tools"] },
-  { name:"Google Gemini", rating:4.5, reviews:6750, views:"680K", desc:"Google Gemini is a multimodal AI assistant that can understand text, images, audio, and video, integrated across Google products for search, coding, and creativity.", tags:["Chatbots & Conversational AI","Coding & Developer Tools","Writing & Content Creation","Productivity & Automation"] },
-  { name:"Microsoft Copilot", rating:4.3, reviews:5400, views:"520K", desc:"Microsoft Copilot is an AI assistant embedded across Microsoft 365 apps, helping with writing, data analysis, presentations, and coding in VS Code and GitHub.", tags:["Productivity & Automation","Coding & Developer Tools","Writing & Content Creation","Jobs, CV & Career Tools"] }
-];
 
 function starsHTML(r) { let s=''; for(let i=1;i<=5;i++) s+=i<=Math.floor(r)?'★':(i-.5<=r?'★':'☆'); return s; }
 
