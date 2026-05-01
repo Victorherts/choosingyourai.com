@@ -10,6 +10,7 @@ const tools = [
 {name:"YouChat",rating:4.0,reviews:1200,views:"95K",desc:"AI chat integrated into You.com search engine with real-time web access and citations.",tags:["Chatbots & Conversational AI"]},
 {name:"Poe",rating:4.2,reviews:2100,views:"180K",desc:"Quora's platform giving access to multiple AI models including GPT-4, Claude, and Gemini in one place.",tags:["Chatbots & Conversational AI"]},
 {name:"Meta AI",rating:4.3,reviews:3200,views:"280K",desc:"Meta's AI assistant powered by Llama, integrated across WhatsApp, Instagram, and Facebook.",tags:["Chatbots & Conversational AI","Productivity & Automation"]},
+{name:"DeepSeek",rating:4.4,reviews:3200,views:"320K",desc:"Open-source AI model offering advanced reasoning, coding, and math capabilities rivaling top proprietary models.",tags:["Chatbots & Conversational AI","Coding & Developer Tools","Education & Study Tools"]},
 
 // Writing & Content Creation
 {name:"Grammarly",rating:4.6,reviews:15200,views:"2.1M",desc:"AI writing assistant for grammar, clarity, tone, and style improvements across all platforms.",tags:["Writing & Content Creation","Productivity & Automation"]},
@@ -115,5 +116,6 @@ const tools = [
 {name:"Flowise",rating:4.2,reviews:2000,views:"150K",desc:"Open-source drag-and-drop tool for building LLM apps and chatbots visually.",tags:["Coding & Developer Tools"]},
 {name:"Jan AI",rating:4.1,reviews:1600,views:"110K",desc:"Open-source desktop app for running AI models locally with full privacy.",tags:["Coding & Developer Tools","Chatbots & Conversational AI"]},
 {name:"LM Studio",rating:4.3,reviews:3400,views:"260K",desc:"Desktop app to discover, download, and run local LLMs with a clean interface.",tags:["Coding & Developer Tools","Chatbots & Conversational AI"]},
-{name:"AnythingLLM",rating:4.1,reviews:1400,views:"95K",desc:"All-in-one AI app for chatting with documents using any LLM, locally or in the cloud.",tags:["Coding & Developer Tools","Chatbots & Conversational AI"]}
+{name:"AnythingLLM",rating:4.1,reviews:1400,views:"95K",desc:"All-in-one AI app for chatting with documents using any LLM, locally or in the cloud.",tags:["Coding & Developer Tools","Chatbots & Conversational AI"]},
+{name:"Descript Audio",rating:4.3,reviews:2200,views:"170K",desc:"AI-powered audio editing with transcription-based editing, filler word removal, and studio sound.",tags:["Audio, Voice & Music AI","Video Creation & Editing"]}
 ];
