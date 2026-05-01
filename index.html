@@ -97,7 +97,7 @@ function renderCards(list) {
   grid.innerHTML = list.map(t => `
     <article class="card">
       <div class="card-header">
-        <span class="card-title">${t.name} ${t.verified ? '✓' : ''}</span>
+        <span class="card-title">${t.name}</span>
         <button class="bookmark" aria-label="Bookmark ${t.name}">🔖</button>
       </div>
       <div class="rating-row">
