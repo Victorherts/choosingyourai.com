@@ -27,8 +27,8 @@ header { background: rgba(255,255,255,.85); backdrop-filter: blur(12px); border-
 .sort-btn:hover { box-shadow: 0 4px 14px rgba(99,102,241,.35); transform: translateY(-1px); }
 
 /* Dropdown */
-.dropdown { position: relative; }
-.dropdown-menu { display: none; position: absolute; top: calc(100% + 6px); left: 0; background: #fff; border: 1px solid #e8e5ef; border-radius: 12px; box-shadow: 0 8px 30px rgba(99,102,241,.12); min-width: 270px; z-index: 20; padding: 8px; }
+.dropdown { position: relative; z-index: 1000; }
+.dropdown-menu { display: none; position: absolute; top: calc(100% + 6px); left: 0; background: #fff; border: 1px solid #e8e5ef; border-radius: 12px; box-shadow: 0 8px 30px rgba(99,102,241,.12); min-width: 270px; z-index: 1001; padding: 8px; }
 .dropdown-menu.open { display: block; }
 .dropdown-item { padding: 9px 14px; font-size: 13px; cursor: pointer; border-radius: 8px; transition: all .15s; }
 .dropdown-item:hover { background: #f8f5ff; color: #6366f1; }
