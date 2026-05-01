@@ -94,7 +94,6 @@ function starsHTML(rating) {
 
 function renderCards(list) {
   const grid = document.getElementById('grid');
-  document.getElementById('count').textContent = list.length;
   grid.innerHTML = list.map(t => `
     <article class="card">
       <div class="card-header">
