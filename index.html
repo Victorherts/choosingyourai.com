@@ -69,6 +69,16 @@ header { background: rgba(255,255,255,.85); backdrop-filter: blur(12px); border-
 .compare-btn:hover { border-color: #a78bfa; color: #6366f1; background: #f8f5ff; }
 .compare-btn.in-compare { border-color: #6366f1; color: #6366f1; background: #f3f0ff; }
 
+/* Votes */
+.vote-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.vote-btn { display: flex; align-items: center; gap: 4px; padding: 5px 12px; border-radius: 16px; border: 1px solid #e2e0ec; background: #fff; font-size: 13px; cursor: pointer; transition: all .2s; color: #777; }
+.vote-btn:hover { border-color: #a78bfa; }
+.vote-btn.voted-like { border-color: #10b981; color: #10b981; background: #ecfdf5; }
+.vote-btn.voted-dislike { border-color: #ef4444; color: #ef4444; background: #fef2f2; }
+.vote-pct { font-size: 13px; font-weight: 600; color: #10b981; }
+.vote-pct.low { color: #f59e0b; }
+.vote-pct.bad { color: #ef4444; }
+
 /* Compare bar */
 .compare-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid rgba(99,102,241,.12); padding: 14px 32px; display: none; align-items: center; justify-content: space-between; z-index: 200; box-shadow: 0 -4px 20px rgba(99,102,241,.1); }
 .compare-bar.show { display: flex; }
@@ -136,6 +146,7 @@ footer .copy { font-size: 12px; color: #999; margin-top: 10px; }
 <script src="tools.js"></script>
 <script src="domains.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script>
 firebase.initializeApp({
@@ -147,16 +158,32 @@ firebase.initializeApp({
   appId: "1:31193515740:web:6828bb1995881c2e715619"
 });
 const db = firebase.firestore();
+const auth = firebase.auth();
 const reviewStats = {};
+const voteStats = {};
+let currentUid = null;
+const userVotes = {};
+
+auth.onAuthStateChanged(user => { currentUid = user ? user.uid : null; });
 
 async function loadAllReviewStats() {
   try {
-    const snap = await db.collection('reviews').get();
-    snap.docs.forEach(doc => {
+    const [revSnap, voteSnap] = await Promise.all([
+      db.collection('reviews').get(),
+      db.collection('votes').get()
+    ]);
+    revSnap.docs.forEach(doc => {
       const d = doc.data();
       if (!reviewStats[d.tool]) reviewStats[d.tool] = { count: 0, total: 0 };
       reviewStats[d.tool].count++;
       reviewStats[d.tool].total += d.rating || 0;
+    });
+    voteSnap.docs.forEach(doc => {
+      const d = doc.data();
+      if (!voteStats[d.tool]) voteStats[d.tool] = { likes: 0, dislikes: 0 };
+      if (d.vote === 'like') voteStats[d.tool].likes++;
+      else voteStats[d.tool].dislikes++;
+      if (currentUid && d.uid === currentUid) userVotes[d.tool] = d.vote;
     });
   } catch(e) { console.error('Error loading stats:', e); }
   renderCards(tools);
@@ -165,6 +192,41 @@ async function loadAllReviewStats() {
 
 const tagIcons = {"Writing & Content Creation":"✍️","Jobs, CV & Career Tools":"💼","Image Generation & Design":"🎨","Video Creation & Editing":"🎥","Productivity & Automation":"📊","Coding & Developer Tools":"<>","Marketing & SEO":"📈","Education & Study Tools":"🎓","Chatbots & Conversational AI":"💬","Audio, Voice & Music AI":"🎧"};
 const toolIcons = {"ChatGPT":"🤖","Google Gemini":"✦","Microsoft Copilot":"🔷","Claude":"🟠","Perplexity AI":"🔍","Canva AI":"🎨","Midjourney":"🎨","GitHub Copilot":"💻","Grammarly":"✍️","ElevenLabs":"🎧"};
+
+function voteHTML(name) {
+  const v = voteStats[name] || { likes: 0, dislikes: 0 };
+  const total = v.likes + v.dislikes;
+  const pct = total > 0 ? Math.round(v.likes / total * 100) : null;
+  const pctClass = pct === null ? '' : pct >= 70 ? '' : pct >= 40 ? 'low' : 'bad';
+  const uv = userVotes[name] || '';
+  const esc = name.replace(/'/g, "\\'");
+  return `<div class="vote-row">
+    <button class="vote-btn ${uv==='like'?'voted-like':''}" onclick="event.preventDefault();event.stopPropagation();vote('${esc}','like')">👍 ${v.likes}</button>
+    <button class="vote-btn ${uv==='dislike'?'voted-dislike':''}" onclick="event.preventDefault();event.stopPropagation();vote('${esc}','dislike')">👎 ${v.dislikes}</button>
+    ${pct !== null ? `<span class="vote-pct ${pctClass}">${pct}% liked</span>` : ''}
+  </div>`;
+}
+
+async function vote(toolName, type) {
+  if (!currentUid) { alert('Please sign in on a tool page first to vote.'); return; }
+  const docId = currentUid + '_' + toolName;
+  const ref = db.collection('votes').doc(docId);
+  const prev = userVotes[toolName];
+  const vs = voteStats[toolName] || (voteStats[toolName] = { likes: 0, dislikes: 0 });
+
+  if (prev === type) {
+    // Undo vote
+    await ref.delete();
+    vs[type + 's']--;
+    delete userVotes[toolName];
+  } else {
+    await ref.set({ tool: toolName, uid: currentUid, vote: type });
+    if (prev) vs[prev + 's']--;
+    vs[type + 's']++;
+    userVotes[toolName] = type;
+  }
+  filterAndRender();
+}
 
 function renderCards(list) {
   document.getElementById('grid').innerHTML = list.map(t => {
@@ -193,6 +255,7 @@ function renderCards(list) {
         </div>
       </div>
       <p class="description">${t.desc}</p>
+      ${voteHTML(t.name)}
       <div class="tags">${t.tags.map(tag => `<span class="tag ${selectedCats.has(tag)?'active':''}" onclick="event.preventDefault();event.stopPropagation();toggleTag('${tag.replace(/'/g,"\\'")}')"><span class="tag-icon">${tagIcons[tag]||'•'}</span>${tag}</span>`).join('')}</div>
       <div class="card-footer">
         <div class="reviews-col">${reviewHTML}</div>

@@ -23,6 +23,14 @@ header{background:rgba(255,255,255,.85);backdrop-filter:blur(12px);border-bottom
 .desc{font-size:15px;color:#555;line-height:1.7;margin-bottom:24px}
 .try-btn{display:inline-block;padding:12px 28px;border-radius:24px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;font-size:14px;font-weight:600;text-decoration:none;box-shadow:0 2px 8px rgba(99,102,241,.25);transition:all .2s}
 .try-btn:hover{box-shadow:0 4px 14px rgba(99,102,241,.35);transform:translateY(-1px)}
+.vote-row{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.vote-btn{display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:20px;border:1px solid #e2e0ec;background:#fff;font-size:14px;cursor:pointer;transition:all .2s;color:#777}
+.vote-btn:hover{border-color:#a78bfa}
+.vote-btn.voted-like{border-color:#10b981;color:#10b981;background:#ecfdf5}
+.vote-btn.voted-dislike{border-color:#ef4444;color:#ef4444;background:#fef2f2}
+.vote-pct{font-size:14px;font-weight:600;color:#10b981}
+.vote-pct.low{color:#f59e0b}
+.vote-pct.bad{color:#ef4444}
 .reviews-section{background:#fff;border-radius:16px;padding:32px;box-shadow:0 2px 12px rgba(99,102,241,.05);border:1px solid rgba(99,102,241,.08)}
 .reviews-section h2{font-size:20px;font-weight:700;margin-bottom:20px}
 
@@ -179,9 +187,58 @@ if (!tool) {
       <div class="meta">${metaHTML}</div>
       <div class="tags">${tool.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
       <p class="desc">${tool.desc}</p>
+      <div class="vote-row" id="voteRow"></div>
       <a href="https://www.google.com/search?q=${encodeURIComponent(tool.name+' AI tool official site')}" target="_blank" rel="noopener" class="try-btn">Try ${tool.name} ↗</a>`;
   }
   renderHero();
+  loadVotes();
+}
+
+// Voting
+let toolVotes = { likes: 0, dislikes: 0 };
+let myVote = null;
+
+async function loadVotes() {
+  const snap = await db.collection('votes').where('tool','==',toolName).get();
+  toolVotes = { likes: 0, dislikes: 0 };
+  myVote = null;
+  const uid = auth.currentUser?.uid;
+  snap.docs.forEach(doc => {
+    const d = doc.data();
+    if (d.vote === 'like') toolVotes.likes++; else toolVotes.dislikes++;
+    if (uid && d.uid === uid) myVote = d.vote;
+  });
+  renderVoteRow();
+}
+
+function renderVoteRow() {
+  const el = document.getElementById('voteRow');
+  if (!el) return;
+  const total = toolVotes.likes + toolVotes.dislikes;
+  const pct = total > 0 ? Math.round(toolVotes.likes / total * 100) : null;
+  const pctClass = pct === null ? '' : pct >= 70 ? '' : pct >= 40 ? 'low' : 'bad';
+  el.innerHTML = `
+    <button class="vote-btn ${myVote==='like'?'voted-like':''}" onclick="castVote('like')">👍 ${toolVotes.likes}</button>
+    <button class="vote-btn ${myVote==='dislike'?'voted-dislike':''}" onclick="castVote('dislike')">👎 ${toolVotes.dislikes}</button>
+    ${pct !== null ? `<span class="vote-pct ${pctClass}">${pct}% liked</span>` : ''}`;
+}
+
+async function castVote(type) {
+  const user = auth.currentUser;
+  if (!user) { alert('Please sign in to vote.'); return; }
+  const docId = user.uid + '_' + toolName;
+  const ref = db.collection('votes').doc(docId);
+  if (myVote === type) {
+    await ref.delete();
+    toolVotes[type + 's']--;
+    myVote = null;
+  } else {
+    await ref.set({ tool: toolName, uid: user.uid, vote: type });
+    if (myVote) toolVotes[myVote + 's']--;
+    toolVotes[type + 's']++;
+    myVote = type;
+  }
+  renderVoteRow();
 }
 
 // Auth UI
@@ -237,6 +294,7 @@ auth.onAuthStateChanged(user => {
     document.getElementById('submitBtn').disabled = !isVerified;
     document.getElementById('submitBtn').style.opacity = isVerified ? '1' : '0.5';
   }
+  loadVotes();
 });
 
 // Star rating
