@@ -115,6 +115,10 @@ header{background:rgba(255,255,255,.85);backdrop-filter:blur(12px);border-bottom
       </div>
 
       <div class="review-form show">
+        <div id="verifyMsg" style="display:none;background:#fef3c7;border:1px solid #f59e0b;border-radius:10px;padding:12px;margin-bottom:14px;font-size:13px;color:#92400e">
+          ⚠️ Please verify your email before posting reviews. Check your inbox.
+          <button onclick="auth.currentUser.sendEmailVerification().then(()=>alert('Verification email sent!'))" style="margin-left:8px;padding:4px 12px;border-radius:12px;border:1px solid #f59e0b;background:#fff;font-size:12px;cursor:pointer;color:#92400e">Resend email</button>
+        </div>
         <div class="star-select" id="starSelect">
           <span data-v="1">☆</span><span data-v="2">☆</span><span data-v="3">☆</span><span data-v="4">☆</span><span data-v="5">☆</span>
         </div>
@@ -189,6 +193,8 @@ document.getElementById('authBtn').addEventListener('click', async () => {
       if (!name) { err.textContent = 'Please enter a display name'; return; }
       const cred = await auth.createUserWithEmailAndPassword(email, pass);
       await cred.user.updateProfile({ displayName: name });
+      await cred.user.sendEmailVerification();
+      alert('Account created! Please check your email to verify your account before posting reviews.');
     } else {
       await auth.signInWithEmailAndPassword(email, pass);
     }
@@ -208,7 +214,13 @@ document.getElementById('logoutBtn').addEventListener('click', () => auth.signOu
 auth.onAuthStateChanged(user => {
   document.getElementById('authBox').style.display = user ? 'none' : 'block';
   document.getElementById('userBar').style.display = user ? 'block' : 'none';
-  if (user) document.getElementById('userName').textContent = user.displayName || user.email;
+  if (user) {
+    document.getElementById('userName').textContent = user.displayName || user.email;
+    const isVerified = user.emailVerified || user.providerData[0]?.providerId === 'google.com';
+    document.getElementById('verifyMsg').style.display = isVerified ? 'none' : 'block';
+    document.getElementById('submitBtn').disabled = !isVerified;
+    document.getElementById('submitBtn').style.opacity = isVerified ? '1' : '0.5';
+  }
 });
 
 // Star rating
@@ -228,6 +240,8 @@ document.getElementById('submitBtn').addEventListener('click', async () => {
   const text = document.getElementById('commentInput').value.trim();
   const user = auth.currentUser;
   if (!user) return;
+  const isVerified = user.emailVerified || user.providerData[0]?.providerId === 'google.com';
+  if (!isVerified) return alert('Please verify your email first. Check your inbox.');
   if (!selectedRating || !text) return alert('Please add a rating and comment.');
   await db.collection('reviews').add({
     tool: toolName,
