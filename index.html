@@ -119,6 +119,7 @@ footer .copy { font-size: 12px; color: #999; margin-top: 10px; }
       <div class="sort-menu" id="sortMenu">
         <div class="sort-item active" data-sort="popular">Most Popular</div>
         <div class="sort-item" data-sort="rated">Top Rated</div>
+        <div class="sort-item" data-sort="liked">Most Liked</div>
         <div class="sort-item" data-sort="reviewed">Most Reviewed</div>
         <div class="sort-item" data-sort="newest">Newest</div>
       </div>
@@ -330,6 +331,10 @@ function sortTools(list) {
       return sorted.sort((a,b) => {
         const sa = reviewStats[a.name], sb = reviewStats[b.name];
         return (sb ? sb.total/sb.count : 0) - (sa ? sa.total/sa.count : 0);
+      });
+    case 'liked':
+      return sorted.sort((a,b) => {
+        return (voteStats[b.name]?.likes||0) - (voteStats[a.name]?.likes||0);
       });
     case 'reviewed':
       return sorted.sort((a,b) => {
