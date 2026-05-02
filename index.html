@@ -38,28 +38,26 @@ header { background: rgba(255,255,255,.85); backdrop-filter: blur(12px); border-
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 22px; padding: 28px 32px; }
 
 /* Card */
-.card { background: #fff; border: 1px solid rgba(99,102,241,.08); border-radius: 14px; padding: 22px; display: flex; flex-direction: column; transition: all .25s ease; position: relative; box-shadow: 0 2px 12px rgba(99,102,241,.05); }
+.card { background: #fff; border: 1px solid rgba(99,102,241,.08); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; transition: all .25s ease; position: relative; box-shadow: 0 2px 12px rgba(99,102,241,.05); cursor: pointer; text-decoration: none; color: inherit; }
 .card:hover { box-shadow: 0 8px 30px rgba(99,102,241,.12); transform: translateY(-2px); }
-.card-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px; }
-.card-title { font-size: 17px; font-weight: 700; color: #1a1a2e; }
-.bookmark { background: none; border: none; font-size: 18px; cursor: pointer; color: #c4c0d4; transition: color .2s; }
-.bookmark:hover { color: #6366f1; }
-.rating-row { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #777; margin-bottom: 12px; }
-.stars { color: #f59e0b; letter-spacing: 1px; }
-.description { font-size: 13.5px; color: #666; line-height: 1.6; margin-bottom: 14px; flex: 1; }
-.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
-.tag { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 500; background: #f3f0ff; color: #6366f1; transition: all .2s; }
-.tag:hover { background: #ede9fe; }
-.card-footer { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #f0edf6; padding-top: 14px; margin-top: auto; }
-.quick-rate { display: flex; gap: 2px; }
-.quick-rate span { color: #d4d0e0; cursor: pointer; font-size: 18px; transition: color .15s; }
-.quick-rate:hover span { color: #f59e0b; }
-.quick-rate span:hover ~ span { color: #d4d0e0 !important; }
-.card-actions { display: flex; gap: 8px; }
-.card-actions a, .card-actions button { font-size: 12px; padding: 6px 14px; border-radius: 20px; border: 1px solid #e2e0ec; background: #fff; cursor: pointer; text-decoration: none; color: #555; font-weight: 500; transition: all .2s; }
-.card-actions a:hover, .card-actions button:hover { border-color: #a78bfa; color: #6366f1; background: #f8f5ff; }
-.reviews-link { color: #6366f1; font-size: 12px; text-decoration: none; font-weight: 500; }
-.reviews-link:hover { text-decoration: underline; }
+.card-top { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 16px; }
+.card-icon { width: 56px; height: 56px; border-radius: 14px; border: 1px solid #e8e5ef; display: flex; align-items: center; justify-content: center; font-size: 28px; flex-shrink: 0; background: #f8f7fc; }
+.card-info { flex: 1; }
+.card-title { font-size: 18px; font-weight: 700; color: #1a1a2e; margin-bottom: 6px; }
+.rating-row { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #777; }
+.rating-row .star { color: #f59e0b; font-size: 16px; }
+.rating-row .score { font-weight: 700; color: #1a1a2e; font-size: 15px; }
+.rating-row .sep { color: #ddd; }
+.description { font-size: 14.5px; color: #555; line-height: 1.6; margin-bottom: 18px; flex: 1; }
+.tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+.tag { padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 500; background: #f3f0ff; color: #6366f1; display: flex; align-items: center; gap: 6px; }
+.tag-icon { font-size: 14px; }
+.card-footer { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #f0edf6; padding-top: 16px; margin-top: auto; }
+.reviews-col { display: flex; flex-direction: column; gap: 2px; }
+.reviews-link { color: #6366f1; font-size: 14px; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+.reviews-sub { font-size: 12px; color: #999; display: flex; align-items: center; gap: 4px; }
+.compare-btn { font-size: 13px; padding: 8px 18px; border-radius: 10px; border: 1px solid #e2e0ec; background: #fff; cursor: pointer; color: #333; font-weight: 500; transition: all .2s; display: flex; align-items: center; gap: 6px; }
+.compare-btn:hover { border-color: #a78bfa; color: #6366f1; background: #f8f5ff; }
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -94,34 +92,41 @@ header { background: rgba(255,255,255,.85); backdrop-filter: blur(12px); border-
 <script src="tools.js"></script>
 <script>
 
-function starsHTML(r) { let s=''; for(let i=1;i<=5;i++) s+=i<=Math.floor(r)?'★':(i-.5<=r?'★':'☆'); return s; }
+const tagIcons = {"Writing & Content Creation":"✍️","Jobs, CV & Career Tools":"💼","Image Generation & Design":"🎨","Video Creation & Editing":"🎥","Productivity & Automation":"📊","Coding & Developer Tools":"<>","Marketing & SEO":"📈","Education & Study Tools":"🎓","Chatbots & Conversational AI":"💬","Audio, Voice & Music AI":"🎧"};
+const toolIcons = {"ChatGPT":"🤖","Google Gemini":"✦","Microsoft Copilot":"🔷","Claude":"🟠","Perplexity AI":"🔍","Canva AI":"🎨","Midjourney":"🎨","GitHub Copilot":"💻","Grammarly":"✍️","ElevenLabs":"🎧"};
 
 function renderCards(list) {
-  document.getElementById('grid').innerHTML = list.map(t => `
-    <article class="card">
-      <div class="card-header">
-        <span class="card-title">${t.name}</span>
-        <button class="bookmark" aria-label="Bookmark ${t.name}">🔖</button>
-      </div>
-      <div class="rating-row">
-        <span>${t.rating}</span>
-        <span class="stars">${starsHTML(t.rating)}</span>
-        <span>(${t.reviews.toLocaleString()})</span>
-        <span>👁 ${t.views} views</span>
+  document.getElementById('grid').innerHTML = list.map(t => {
+    const url = `tool.html?t=${encodeURIComponent(t.name)}`;
+    const icon = toolIcons[t.name] || '🤖';
+    const revCount = t.reviews > 100 ? Math.floor(t.reviews/100) : t.reviews;
+    return `
+    <a href="${url}" class="card">
+      <div class="card-top">
+        <div class="card-icon">${icon}</div>
+        <div class="card-info">
+          <div class="card-title">${t.name}</div>
+          <div class="rating-row">
+            <span class="star">★</span>
+            <span class="score">${t.rating}</span>
+            <span class="sep">|</span>
+            <span>(${t.reviews.toLocaleString()} reviews)</span>
+            <span class="sep">|</span>
+            <span>👁 ${t.views} views</span>
+          </div>
+        </div>
       </div>
       <p class="description">${t.desc}</p>
-      <div class="tags">${t.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>
+      <div class="tags">${t.tags.map(tag => `<span class="tag"><span class="tag-icon">${tagIcons[tag]||'•'}</span>${tag}</span>`).join('')}</div>
       <div class="card-footer">
-        <div>
-          <div class="quick-rate" aria-label="Quick rate">${[1,2,3,4,5].map(() => `<span>☆</span>`).join('')}</div>
-          <a href="#" class="reviews-link">Reviews (${t.reviews > 100 ? Math.floor(t.reviews/100) : t.reviews})</a>
+        <div class="reviews-col">
+          <span class="reviews-link">💬 Reviews (${revCount})</span>
+          <span class="reviews-sub">See what users are saying ›</span>
         </div>
-        <div class="card-actions">
-          <button>Compare +</button>
-          <a href="tool.html?t=${encodeURIComponent(t.name)}">Learn More ↗</a>
-        </div>
+        <button class="compare-btn" onclick="event.preventDefault();event.stopPropagation();">📋 Compare</button>
       </div>
-    </article>`).join('');
+    </a>`;
+  }).join('');
 }
 
 const categories = ["Writing & Content Creation","Jobs, CV & Career Tools","Image Generation & Design","Video Creation & Editing","Productivity & Automation","Coding & Developer Tools","Marketing & SEO","Education & Study Tools","Chatbots & Conversational AI","Audio, Voice & Music AI"];
