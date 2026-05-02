@@ -25,6 +25,12 @@ header { background: rgba(255,255,255,.85); backdrop-filter: blur(12px); border-
 .filter-btn:hover { border-color: #a78bfa; color: #6366f1; background: #f8f5ff; }
 .sort-btn { margin-left: auto; padding: 8px 18px; border-radius: 20px; background: #fff; color: #555; border: 1px solid #e2e0ec; font-size: 13px; font-weight: 500; cursor: pointer; transition: all .2s; }
 .sort-btn:hover { border-color: #a78bfa; color: #6366f1; background: #f8f5ff; }
+.sort-dropdown { position: relative; margin-left: auto; }
+.sort-menu { display: none; position: absolute; top: calc(100% + 6px); right: 0; background: #fff; border: 1px solid #e8e5ef; border-radius: 12px; box-shadow: 0 8px 30px rgba(99,102,241,.12); min-width: 200px; z-index: 1001; padding: 8px; }
+.sort-menu.open { display: block; }
+.sort-item { padding: 9px 14px; font-size: 13px; cursor: pointer; border-radius: 8px; transition: all .15s; }
+.sort-item:hover { background: #f8f5ff; color: #6366f1; }
+.sort-item.active { background: #ede9fe; color: #6366f1; font-weight: 600; }
 
 /* Dropdown */
 .dropdown { position: relative; z-index: 1000; }
@@ -98,7 +104,15 @@ footer .copy { font-size: 12px; color: #999; margin-top: 10px; }
       <button class="filter-btn" id="catBtn" aria-label="Filter by category">Categories ▾</button>
       <div class="dropdown-menu" id="catMenu"></div>
     </div>
-    <button class="sort-btn" id="sortBtn">Sort by: Best Match ▾</button>
+    <div class="sort-dropdown" id="sortDropdown">
+      <button class="sort-btn" id="sortBtn">Sort by: Most Popular ▾</button>
+      <div class="sort-menu" id="sortMenu">
+        <div class="sort-item active" data-sort="popular">Most Popular</div>
+        <div class="sort-item" data-sort="rated">Top Rated</div>
+        <div class="sort-item" data-sort="reviewed">Most Reviewed</div>
+        <div class="sort-item" data-sort="newest">Newest</div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -223,18 +237,48 @@ function filterAndRender() {
   let f = tools;
   if (q) f = f.filter(t => t.name.toLowerCase().includes(q) || t.desc.toLowerCase().includes(q));
   if (selectedCats.size) f = f.filter(t => t.tags.some(tag => selectedCats.has(tag)));
-  renderCards(f);
+  renderCards(sortTools(f));
 }
 
 document.getElementById('search').addEventListener('input', filterAndRender);
-document.getElementById('sortBtn').addEventListener('click', () => {
-  const sorted = [...tools].sort((a,b) => {
-    const sa = reviewStats[a.name], sb = reviewStats[b.name];
-    const ra = sa ? sa.total/sa.count : 0, rb = sb ? sb.total/sb.count : 0;
-    return rb - ra;
+// Sort dropdown
+let currentSort = 'popular';
+const sortBtn = document.getElementById('sortBtn');
+const sortMenu = document.getElementById('sortMenu');
+sortBtn.addEventListener('click', e => { e.stopPropagation(); sortMenu.classList.toggle('open'); });
+document.addEventListener('click', () => { sortMenu.classList.remove('open'); });
+sortMenu.addEventListener('click', e => e.stopPropagation());
+
+sortMenu.querySelectorAll('.sort-item').forEach(item => {
+  item.addEventListener('click', () => {
+    currentSort = item.dataset.sort;
+    sortMenu.querySelectorAll('.sort-item').forEach(i => i.classList.remove('active'));
+    item.classList.add('active');
+    sortBtn.textContent = 'Sort by: ' + item.textContent + ' ▾';
+    sortMenu.classList.remove('open');
+    filterAndRender();
   });
-  renderCards(sorted);
 });
+
+function sortTools(list) {
+  const sorted = [...list];
+  switch(currentSort) {
+    case 'rated':
+      return sorted.sort((a,b) => {
+        const sa = reviewStats[a.name], sb = reviewStats[b.name];
+        return (sb ? sb.total/sb.count : 0) - (sa ? sa.total/sa.count : 0);
+      });
+    case 'reviewed':
+      return sorted.sort((a,b) => {
+        return (reviewStats[b.name]?.count||0) - (reviewStats[a.name]?.count||0);
+      });
+    case 'newest':
+      return sorted.reverse();
+    case 'popular':
+    default:
+      return sorted;
+  }
+}
 
 // Compare
 const compareList = [];
