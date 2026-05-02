@@ -13,10 +13,7 @@ header{background:rgba(255,255,255,.85);backdrop-filter:blur(12px);border-bottom
 .logo{font-size:26px;font-weight:800;background:linear-gradient(135deg,#6366f1,#a855f7,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-.5px;text-decoration:none}
 .back{padding:8px 18px;border-radius:20px;border:1px solid #e2e0ec;background:#fff;font-size:13px;font-weight:500;color:#555;cursor:pointer;text-decoration:none;transition:all .2s}
 .back:hover{border-color:#a78bfa;color:#6366f1;background:#f8f5ff}
-
 .container{max-width:800px;margin:0 auto;padding:32px 24px}
-
-/* Hero */
 .hero{background:#fff;border-radius:16px;padding:32px;box-shadow:0 2px 12px rgba(99,102,241,.05);border:1px solid rgba(99,102,241,.08);margin-bottom:24px}
 .hero h1{font-size:28px;font-weight:800;margin-bottom:8px}
 .meta{display:flex;align-items:center;gap:10px;font-size:14px;color:#777;margin-bottom:16px;flex-wrap:wrap}
@@ -26,20 +23,32 @@ header{background:rgba(255,255,255,.85);backdrop-filter:blur(12px);border-bottom
 .desc{font-size:15px;color:#555;line-height:1.7;margin-bottom:24px}
 .try-btn{display:inline-block;padding:12px 28px;border-radius:24px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;font-size:14px;font-weight:600;text-decoration:none;box-shadow:0 2px 8px rgba(99,102,241,.25);transition:all .2s}
 .try-btn:hover{box-shadow:0 4px 14px rgba(99,102,241,.35);transform:translateY(-1px)}
-
-/* Reviews */
 .reviews-section{background:#fff;border-radius:16px;padding:32px;box-shadow:0 2px 12px rgba(99,102,241,.05);border:1px solid rgba(99,102,241,.08)}
 .reviews-section h2{font-size:20px;font-weight:700;margin-bottom:20px}
 
-/* Login prompt */
-.login-prompt{background:#f8f5ff;border:1px solid #e2e0ec;border-radius:12px;padding:20px;text-align:center;margin-bottom:24px}
-.login-prompt p{color:#666;margin-bottom:12px;font-size:14px}
-.login-btn{padding:10px 24px;border-radius:20px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
-.login-btn:hover{box-shadow:0 4px 14px rgba(99,102,241,.35)}
-.login-input{display:none;margin-bottom:20px}
-.login-input.show{display:block}
-.login-input input{width:100%;padding:10px 16px;border:1px solid #e2e0ec;border-radius:10px;font-size:14px;margin-bottom:8px;outline:none}
-.login-input input:focus{border-color:#a78bfa;box-shadow:0 0 0 3px rgba(167,139,250,.15)}
+/* Auth */
+.auth-box{background:#f8f5ff;border:1px solid #e2e0ec;border-radius:12px;padding:24px;margin-bottom:24px;text-align:center}
+.auth-box p{color:#666;margin-bottom:14px;font-size:14px}
+.auth-tabs{display:flex;gap:8px;justify-content:center;margin-bottom:16px}
+.auth-tab{padding:8px 20px;border-radius:20px;border:1px solid #e2e0ec;background:#fff;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;color:#555}
+.auth-tab.active{background:#6366f1;color:#fff;border-color:#6366f1}
+.auth-form{max-width:300px;margin:0 auto}
+.auth-form input{width:100%;padding:10px 16px;border:1px solid #e2e0ec;border-radius:10px;font-size:14px;margin-bottom:10px;outline:none;font-family:inherit}
+.auth-form input:focus{border-color:#a78bfa;box-shadow:0 0 0 3px rgba(167,139,250,.15)}
+.auth-btn{width:100%;padding:10px;border-radius:20px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;font-size:13px;font-weight:600;cursor:pointer;margin-bottom:8px;transition:all .2s}
+.auth-btn:hover{box-shadow:0 4px 14px rgba(99,102,241,.35)}
+.google-btn{width:100%;padding:10px;border-radius:20px;background:#fff;color:#333;border:1px solid #e2e0ec;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s}
+.google-btn:hover{border-color:#a78bfa;background:#f8f5ff}
+.divider{display:flex;align-items:center;gap:12px;margin:12px 0;color:#ccc;font-size:12px}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:#e2e0ec}
+.auth-error{color:#ef4444;font-size:12px;margin-bottom:8px;min-height:18px}
+
+/* Logged in */
+.user-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.user-bar span{font-size:13px;color:#666}
+.user-bar strong{color:#6366f1}
+.logout-btn{padding:6px 14px;border-radius:16px;border:1px solid #e2e0ec;background:#fff;font-size:12px;color:#555;cursor:pointer;transition:all .2s}
+.logout-btn:hover{border-color:#ef4444;color:#ef4444}
 
 /* Review form */
 .review-form{display:none;margin-bottom:24px}
@@ -52,9 +61,6 @@ header{background:rgba(255,255,255,.85);backdrop-filter:blur(12px);border-bottom
 .star-select:hover span{color:#f59e0b}
 .star-select span:hover ~ span{color:#d4d0e0 !important}
 .submit-btn{padding:10px 24px;border-radius:20px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;font-size:13px;font-weight:600;cursor:pointer}
-.logged-as{font-size:13px;color:#666;margin-bottom:12px}
-.logged-as strong{color:#6366f1}
-.logout-link{color:#ec4899;cursor:pointer;font-size:12px;margin-left:8px}
 
 /* Review list */
 .review-list{display:flex;flex-direction:column;gap:16px}
@@ -65,6 +71,7 @@ header{background:rgba(255,255,255,.85);backdrop-filter:blur(12px);border-bottom
 .review-item .r-stars{color:#f59e0b;font-size:14px;margin-bottom:6px}
 .review-item .r-text{font-size:13.5px;color:#555;line-height:1.6}
 .no-reviews{color:#999;font-size:14px;text-align:center;padding:20px}
+.loading{text-align:center;color:#999;padding:20px;font-size:14px}
 </style>
 </head>
 <body>
@@ -80,79 +87,128 @@ header{background:rgba(255,255,255,.85);backdrop-filter:blur(12px);border-bottom
   <div class="reviews-section">
     <h2>Reviews & Comments</h2>
 
-    <div class="login-prompt" id="loginPrompt">
-      <p>Log in to leave a review</p>
-      <button class="login-btn" id="showLoginBtn">Sign In</button>
-      <div class="login-input" id="loginInput">
-        <input type="text" id="usernameInput" placeholder="Enter your display name">
-        <button class="login-btn" id="loginBtn">Continue</button>
+    <!-- Auth box (shown when logged out) -->
+    <div class="auth-box" id="authBox">
+      <p>Sign in to leave a review</p>
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="login">Sign In</button>
+        <button class="auth-tab" data-tab="register">Register</button>
+      </div>
+      <div class="auth-form">
+        <div id="nameField" style="display:none">
+          <input type="text" id="displayName" placeholder="Display name">
+        </div>
+        <input type="email" id="emailInput" placeholder="Email">
+        <input type="password" id="passwordInput" placeholder="Password">
+        <div class="auth-error" id="authError"></div>
+        <button class="auth-btn" id="authBtn">Sign In</button>
+        <div class="divider">or</div>
+        <button class="google-btn" id="googleBtn">Continue with Google</button>
       </div>
     </div>
 
-    <div class="review-form" id="reviewForm">
-      <p class="logged-as">Signed in as <strong id="userName"></strong><span class="logout-link" id="logoutBtn">Sign out</span></p>
-      <div class="star-select" id="starSelect">
-        <span data-v="1">☆</span><span data-v="2">☆</span><span data-v="3">☆</span><span data-v="4">☆</span><span data-v="5">☆</span>
+    <!-- User bar (shown when logged in) -->
+    <div id="userBar" style="display:none">
+      <div class="user-bar">
+        <span>Signed in as <strong id="userName"></strong></span>
+        <button class="logout-btn" id="logoutBtn">Sign out</button>
       </div>
-      <textarea id="commentInput" placeholder="Write your review..."></textarea>
-      <button class="submit-btn" id="submitBtn">Post Review</button>
+
+      <div class="review-form show">
+        <div class="star-select" id="starSelect">
+          <span data-v="1">☆</span><span data-v="2">☆</span><span data-v="3">☆</span><span data-v="4">☆</span><span data-v="5">☆</span>
+        </div>
+        <textarea id="commentInput" placeholder="Write your review..."></textarea>
+        <button class="submit-btn" id="submitBtn">Post Review</button>
+      </div>
     </div>
 
-    <div class="review-list" id="reviewList"></div>
+    <div class="review-list" id="reviewList"><p class="loading">Loading reviews...</p></div>
   </div>
 </div>
 
 <script src="tools.js"></script>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
 <script>
+// Firebase config
+firebase.initializeApp({
+  apiKey: "AIzaSyA9C7IKIZWPv5WKoF9m2gX1OCZrneBF1cY",
+  authDomain: "choosingyourai-e9b67.firebaseapp.com",
+  projectId: "choosingyourai-e9b67",
+  storageBucket: "choosingyourai-e9b67.firebasestorage.app",
+  messagingSenderId: "31193515740",
+  appId: "1:31193515740:web:6828bb1995881c2e715619"
+});
+
+const auth = firebase.auth();
+const db = firebase.firestore();
 const toolName = new URLSearchParams(location.search).get('t');
 const tool = tools.find(t => t.name === toolName);
 
-if (!tool) { document.getElementById('hero').innerHTML = '<h1>Tool not found</h1><p>Go back and try again.</p>'; }
-else {
+// Render hero
+if (!tool) {
+  document.getElementById('hero').innerHTML = '<h1>Tool not found</h1><p>Go back and try again.</p>';
+} else {
   document.title = tool.name + ' — ChoosingYourAI';
   const s = r => { let o=''; for(let i=1;i<=5;i++) o+=i<=Math.floor(r)?'★':(i-.5<=r?'★':'☆'); return o; };
   document.getElementById('hero').innerHTML = `
     <h1>${tool.name}</h1>
-    <div class="meta">
-      <span class="stars">${s(tool.rating)}</span>
-      <span>${tool.rating} / 5</span>
-      <span>(${tool.reviews.toLocaleString()} reviews)</span>
-      <span>👁 ${tool.views} views</span>
-    </div>
+    <div class="meta"><span class="stars">${s(tool.rating)}</span><span>${tool.rating} / 5</span><span>(${tool.reviews.toLocaleString()} reviews)</span><span>👁 ${tool.views} views</span></div>
     <div class="tags">${tool.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
     <p class="desc">${tool.desc}</p>
-    <a href="https://www.google.com/search?q=${encodeURIComponent(tool.name+' AI tool')}" target="_blank" rel="noopener" class="try-btn">Try ${tool.name} ↗</a>`;
+    <a href="https://www.google.com/search?q=${encodeURIComponent(tool.name+' AI tool official site')}" target="_blank" rel="noopener" class="try-btn">Try ${tool.name} ↗</a>`;
 }
 
-// Auth
-const STORAGE_USER = 'cyai_user';
-let currentUser = localStorage.getItem(STORAGE_USER);
-
-function getReviews() { return JSON.parse(localStorage.getItem('cyai_reviews_'+toolName) || '[]'); }
-function saveReviews(r) { localStorage.setItem('cyai_reviews_'+toolName, JSON.stringify(r)); }
-
-function updateAuthUI() {
-  currentUser = localStorage.getItem(STORAGE_USER);
-  document.getElementById('loginPrompt').style.display = currentUser ? 'none' : 'block';
-  document.getElementById('reviewForm').classList.toggle('show', !!currentUser);
-  if (currentUser) document.getElementById('userName').textContent = currentUser;
-}
-
-document.getElementById('showLoginBtn').addEventListener('click', () => {
-  document.getElementById('loginInput').classList.add('show');
-  document.getElementById('usernameInput').focus();
+// Auth UI
+let authMode = 'login';
+document.querySelectorAll('.auth-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    authMode = tab.dataset.tab;
+    document.getElementById('nameField').style.display = authMode === 'register' ? 'block' : 'none';
+    document.getElementById('authBtn').textContent = authMode === 'register' ? 'Create Account' : 'Sign In';
+    document.getElementById('authError').textContent = '';
+  });
 });
 
-document.getElementById('loginBtn').addEventListener('click', () => {
-  const name = document.getElementById('usernameInput').value.trim();
-  if (!name) return;
-  localStorage.setItem(STORAGE_USER, name);
-  updateAuthUI();
+// Email auth
+document.getElementById('authBtn').addEventListener('click', async () => {
+  const email = document.getElementById('emailInput').value.trim();
+  const pass = document.getElementById('passwordInput').value;
+  const err = document.getElementById('authError');
+  err.textContent = '';
+  try {
+    if (authMode === 'register') {
+      const name = document.getElementById('displayName').value.trim();
+      if (!name) { err.textContent = 'Please enter a display name'; return; }
+      const cred = await auth.createUserWithEmailAndPassword(email, pass);
+      await cred.user.updateProfile({ displayName: name });
+    } else {
+      await auth.signInWithEmailAndPassword(email, pass);
+    }
+  } catch (e) { err.textContent = e.message.replace('Firebase: ', ''); }
 });
 
-document.getElementById('logoutBtn').addEventListener('click', () => {
-  localStorage.removeItem(STORAGE_USER);
-  updateAuthUI();
+// Google auth
+document.getElementById('googleBtn').addEventListener('click', async () => {
+  try { await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()); }
+  catch (e) { document.getElementById('authError').textContent = e.message.replace('Firebase: ', ''); }
+});
+
+// Logout
+document.getElementById('logoutBtn').addEventListener('click', () => auth.signOut());
+
+// Auth state
+auth.onAuthStateChanged(user => {
+  document.getElementById('authBox').style.display = user ? 'none' : 'block';
+  document.getElementById('userBar').style.display = user ? 'block' : 'none';
+  if (user) document.getElementById('userName').textContent = user.displayName || user.email;
 });
 
 // Star rating
@@ -160,41 +216,51 @@ let selectedRating = 0;
 document.getElementById('starSelect').querySelectorAll('span').forEach(star => {
   star.addEventListener('click', () => {
     selectedRating = +star.dataset.v;
-    document.getElementById('starSelect').querySelectorAll('span').forEach((s,i) => {
+    document.getElementById('starSelect').querySelectorAll('span').forEach((s, i) => {
       s.textContent = i < selectedRating ? '★' : '☆';
       s.classList.toggle('active', i < selectedRating);
     });
   });
 });
 
-// Submit
-document.getElementById('submitBtn').addEventListener('click', () => {
+// Submit review
+document.getElementById('submitBtn').addEventListener('click', async () => {
   const text = document.getElementById('commentInput').value.trim();
+  const user = auth.currentUser;
+  if (!user) return;
   if (!selectedRating || !text) return alert('Please add a rating and comment.');
-  const reviews = getReviews();
-  reviews.unshift({ user: currentUser, rating: selectedRating, text, date: new Date().toLocaleDateString() });
-  saveReviews(reviews);
+  await db.collection('reviews').add({
+    tool: toolName,
+    user: user.displayName || user.email,
+    uid: user.uid,
+    rating: selectedRating,
+    text: text,
+    date: firebase.firestore.FieldValue.serverTimestamp()
+  });
   document.getElementById('commentInput').value = '';
   selectedRating = 0;
-  document.getElementById('starSelect').querySelectorAll('span').forEach(s => { s.textContent='☆'; s.classList.remove('active'); });
-  renderReviews();
+  document.getElementById('starSelect').querySelectorAll('span').forEach(s => { s.textContent = '☆'; s.classList.remove('active'); });
+  loadReviews();
 });
 
-function renderReviews() {
-  const reviews = getReviews();
+// Load reviews
+async function loadReviews() {
+  const snap = await db.collection('reviews').where('tool', '==', toolName).orderBy('date', 'desc').get();
   const list = document.getElementById('reviewList');
-  if (!reviews.length) { list.innerHTML = '<p class="no-reviews">No reviews yet. Be the first!</p>'; return; }
+  if (snap.empty) { list.innerHTML = '<p class="no-reviews">No reviews yet. Be the first!</p>'; return; }
   const s = r => { let o=''; for(let i=1;i<=5;i++) o+=i<=r?'★':'☆'; return o; };
-  list.innerHTML = reviews.map(r => `
-    <div class="review-item">
-      <div class="r-header"><span class="r-user">${r.user}</span><span class="r-date">${r.date}</span></div>
+  list.innerHTML = snap.docs.map(doc => {
+    const r = doc.data();
+    const d = r.date ? r.date.toDate().toLocaleDateString() : 'Just now';
+    return `<div class="review-item">
+      <div class="r-header"><span class="r-user">${r.user}</span><span class="r-date">${d}</span></div>
       <div class="r-stars">${s(r.rating)}</div>
       <p class="r-text">${r.text}</p>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
-updateAuthUI();
-renderReviews();
+if (tool) loadReviews();
 </script>
 </body>
 </html>
