@@ -259,19 +259,41 @@ document.getElementById('submitBtn').addEventListener('click', async () => {
 
 // Load reviews
 async function loadReviews() {
-  const snap = await db.collection('reviews').where('tool', '==', toolName).orderBy('date', 'desc').get();
   const list = document.getElementById('reviewList');
-  if (snap.empty) { list.innerHTML = '<p class="no-reviews">No reviews yet. Be the first!</p>'; return; }
-  const s = r => { let o=''; for(let i=1;i<=5;i++) o+=i<=r?'★':'☆'; return o; };
-  list.innerHTML = snap.docs.map(doc => {
-    const r = doc.data();
-    const d = r.date ? r.date.toDate().toLocaleDateString() : 'Just now';
-    return `<div class="review-item">
-      <div class="r-header"><span class="r-user">${r.user}</span><span class="r-date">${d}</span></div>
-      <div class="r-stars">${s(r.rating)}</div>
-      <p class="r-text">${r.text}</p>
-    </div>`;
-  }).join('');
+  try {
+    const snap = await db.collection('reviews').where('tool', '==', toolName).orderBy('date', 'desc').get();
+    if (snap.empty) { list.innerHTML = '<p class="no-reviews">No reviews yet. Be the first!</p>'; return; }
+    const s = r => { let o=''; for(let i=1;i<=5;i++) o+=i<=r?'★':'☆'; return o; };
+    list.innerHTML = snap.docs.map(doc => {
+      const r = doc.data();
+      const d = r.date ? r.date.toDate().toLocaleDateString() : 'Just now';
+      return `<div class="review-item">
+        <div class="r-header"><span class="r-user">${r.user}</span><span class="r-date">${d}</span></div>
+        <div class="r-stars">${s(r.rating)}</div>
+        <p class="r-text">${r.text}</p>
+      </div>`;
+    }).join('');
+  } catch (e) {
+    console.error('Firestore error:', e);
+    if (e.code === 'failed-precondition') {
+      // Index not yet created — fall back to unordered query
+      const snap = await db.collection('reviews').where('tool', '==', toolName).get();
+      if (snap.empty) { list.innerHTML = '<p class="no-reviews">No reviews yet. Be the first!</p>'; return; }
+      const s = r => { let o=''; for(let i=1;i<=5;i++) o+=i<=r?'★':'☆'; return o; };
+      const docs = snap.docs.sort((a,b) => (b.data().date?.toMillis()||0) - (a.data().date?.toMillis()||0));
+      list.innerHTML = docs.map(doc => {
+        const r = doc.data();
+        const d = r.date ? r.date.toDate().toLocaleDateString() : 'Just now';
+        return `<div class="review-item">
+          <div class="r-header"><span class="r-user">${r.user}</span><span class="r-date">${d}</span></div>
+          <div class="r-stars">${s(r.rating)}</div>
+          <p class="r-text">${r.text}</p>
+        </div>`;
+      }).join('');
+    } else {
+      list.innerHTML = '<p class="no-reviews">Error loading reviews. Please refresh.</p>';
+    }
+  }
 }
 
 if (tool) loadReviews();
