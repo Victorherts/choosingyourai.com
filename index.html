@@ -50,7 +50,9 @@ header { background: rgba(255,255,255,.85); backdrop-filter: blur(12px); border-
 .rating-row .sep { color: #ddd; }
 .description { font-size: 14.5px; color: #555; line-height: 1.6; margin-bottom: 18px; flex: 1; }
 .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
-.tag { padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 500; background: #f3f0ff; color: #6366f1; display: flex; align-items: center; gap: 6px; }
+.tag { padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 500; background: #f3f0ff; color: #6366f1; display: flex; align-items: center; gap: 6px; cursor: pointer; transition: all .2s; }
+.tag:hover { background: #ede9fe; }
+.tag.active { background: #6366f1; color: #fff; }
 .tag-icon { font-size: 14px; }
 .card-footer { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #f0edf6; padding-top: 16px; margin-top: auto; }
 .reviews-col { display: flex; flex-direction: column; gap: 2px; }
@@ -117,7 +119,7 @@ function renderCards(list) {
         </div>
       </div>
       <p class="description">${t.desc}</p>
-      <div class="tags">${t.tags.map(tag => `<span class="tag"><span class="tag-icon">${tagIcons[tag]||'•'}</span>${tag}</span>`).join('')}</div>
+      <div class="tags">${t.tags.map(tag => `<span class="tag ${selectedCats.has(tag)?'active':''}" onclick="event.preventDefault();event.stopPropagation();toggleTag('${tag.replace(/'/g,"\\'")}')"><span class="tag-icon">${tagIcons[tag]||'•'}</span>${tag}</span>`).join('')}</div>
       <div class="card-footer">
         <div class="reviews-col">
           <span class="reviews-link">💬 Reviews (${revCount})</span>
@@ -148,6 +150,16 @@ catMenu.querySelectorAll('.dropdown-item').forEach(item => {
     filterAndRender();
   });
 });
+
+function toggleTag(cat) {
+  selectedCats.has(cat) ? selectedCats.delete(cat) : selectedCats.add(cat);
+  // Sync dropdown
+  catMenu.querySelectorAll('.dropdown-item').forEach(item => {
+    item.classList.toggle('selected', selectedCats.has(item.dataset.cat));
+  });
+  catBtn.textContent = selectedCats.size ? `Categories (${selectedCats.size}) ▾` : 'Categories ▾';
+  filterAndRender();
+}
 
 function filterAndRender() {
   const q = document.getElementById('search').value.toLowerCase();
