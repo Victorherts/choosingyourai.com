@@ -60,6 +60,18 @@ header { background: rgba(255,255,255,.85); backdrop-filter: blur(12px); border-
 .reviews-sub { font-size: 12px; color: #999; display: flex; align-items: center; gap: 4px; }
 .compare-btn { font-size: 13px; padding: 8px 18px; border-radius: 10px; border: 1px solid #e2e0ec; background: #fff; cursor: pointer; color: #333; font-weight: 500; transition: all .2s; display: flex; align-items: center; gap: 6px; }
 .compare-btn:hover { border-color: #a78bfa; color: #6366f1; background: #f8f5ff; }
+.compare-btn.in-compare { border-color: #6366f1; color: #6366f1; background: #f3f0ff; }
+
+/* Compare bar */
+.compare-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid rgba(99,102,241,.12); padding: 14px 32px; display: none; align-items: center; justify-content: space-between; z-index: 200; box-shadow: 0 -4px 20px rgba(99,102,241,.1); }
+.compare-bar.show { display: flex; }
+.compare-chips { display: flex; gap: 10px; align-items: center; }
+.compare-chip { display: flex; align-items: center; gap: 8px; padding: 6px 14px; background: #f3f0ff; border-radius: 20px; font-size: 13px; font-weight: 500; color: #6366f1; }
+.compare-chip .remove { cursor: pointer; font-size: 16px; color: #999; margin-left: 4px; }
+.compare-chip .remove:hover { color: #ef4444; }
+.compare-bar-actions { display: flex; gap: 10px; }
+.compare-go { padding: 10px 24px; border-radius: 20px; background: linear-gradient(135deg,#6366f1,#8b5cf6); color: #fff; border: none; font-size: 13px; font-weight: 600; cursor: pointer; box-shadow: 0 2px 8px rgba(99,102,241,.25); }
+.compare-clear { padding: 10px 18px; border-radius: 20px; border: 1px solid #e2e0ec; background: #fff; font-size: 13px; color: #555; cursor: pointer; }
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -90,6 +102,14 @@ header { background: rgba(255,255,255,.85); backdrop-filter: blur(12px); border-
 </div>
 
 <main class="grid" id="grid"></main>
+
+<div class="compare-bar" id="compareBar">
+  <div class="compare-chips" id="compareChips"></div>
+  <div class="compare-bar-actions">
+    <button class="compare-clear" onclick="clearCompare()">Clear all</button>
+    <button class="compare-go" onclick="goCompare()">Compare Now</button>
+  </div>
+</div>
 
 <script src="tools.js"></script>
 <script>
@@ -125,7 +145,7 @@ function renderCards(list) {
           <span class="reviews-link">💬 Reviews (${revCount})</span>
           <span class="reviews-sub">See what users are saying ›</span>
         </div>
-        <button class="compare-btn" onclick="event.preventDefault();event.stopPropagation();">⧉ Compare</button>
+        <button class="compare-btn ${compareList.includes(t.name)?'in-compare':''}" data-name="${t.name}" onclick="toggleCompare('${t.name.replace(/'/g,"\\'")}',event)">${compareList.includes(t.name)?'✓ Added':'⧉ Compare'}</button>
       </div>
     </a>`;
   }).join('');
@@ -178,6 +198,33 @@ document.querySelectorAll('.nav-pill').forEach(pill => {
     pill.classList.add('active');
   });
 });
+
+// Compare
+const compareList = [];
+function toggleCompare(name, e) {
+  e.preventDefault(); e.stopPropagation();
+  const idx = compareList.indexOf(name);
+  if (idx > -1) { compareList.splice(idx, 1); }
+  else if (compareList.length >= 3) { alert('You can compare up to 3 tools at a time.'); return; }
+  else { compareList.push(name); }
+  updateCompareUI();
+}
+function removeCompare(name) { compareList.splice(compareList.indexOf(name), 1); updateCompareUI(); }
+function clearCompare() { compareList.length = 0; updateCompareUI(); }
+function updateCompareUI() {
+  const bar = document.getElementById('compareBar');
+  const chips = document.getElementById('compareChips');
+  bar.classList.toggle('show', compareList.length > 0);
+  chips.innerHTML = compareList.map(n => `<span class="compare-chip">${n}<span class="remove" onclick="removeCompare('${n.replace(/'/g,"\\'")}')">&times;</span></span>`).join('');
+  document.querySelectorAll('.compare-btn').forEach(btn => {
+    btn.classList.toggle('in-compare', compareList.includes(btn.dataset.name));
+    btn.textContent = compareList.includes(btn.dataset.name) ? '✓ Added' : '⧉ Compare';
+  });
+}
+function goCompare() {
+  if (compareList.length < 2) { alert('Select at least 2 tools to compare.'); return; }
+  location.href = 'compare.html?' + compareList.map(n => 't=' + encodeURIComponent(n)).join('&');
+}
 
 renderCards(tools);
 </script>

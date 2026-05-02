@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compare Tools — ChoosingYourAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(160deg,#f8f9fb 0%,#f3f0f8 40%,#eef0fa 100%);color:#1a1a2e;min-height:100vh}
+header{background:rgba(255,255,255,.85);backdrop-filter:blur(12px);border-bottom:1px solid rgba(99,102,241,.08);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.logo{font-size:26px;font-weight:800;background:linear-gradient(135deg,#6366f1,#a855f7,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-.5px;text-decoration:none}
+.back{padding:8px 18px;border-radius:20px;border:1px solid #e2e0ec;background:#fff;font-size:13px;font-weight:500;color:#555;text-decoration:none;transition:all .2s}
+.back:hover{border-color:#a78bfa;color:#6366f1;background:#f8f5ff}
+.container{max-width:1100px;margin:0 auto;padding:32px 24px}
+h1{font-size:24px;font-weight:800;margin-bottom:24px;text-align:center}
+
+/* Compare grid */
+.compare-grid{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.col{background:#fff;border-radius:16px;padding:24px;border:1px solid rgba(99,102,241,.08);box-shadow:0 2px 12px rgba(99,102,241,.05);display:flex;flex-direction:column;position:relative}
+.remove-btn{position:absolute;top:12px;right:12px;background:none;border:none;font-size:18px;color:#ccc;cursor:pointer}
+.remove-btn:hover{color:#ef4444}
+.col-name{font-size:20px;font-weight:700;margin-bottom:16px;text-align:center}
+
+/* Rows */
+.row{padding:14px 0;border-bottom:1px solid #f0edf6}
+.row:last-child{border-bottom:none}
+.row-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:#999;margin-bottom:6px}
+.row-value{font-size:14px;font-weight:500;color:#1a1a2e}
+.stars{color:#f59e0b}
+.price-free{color:#10b981;font-weight:600}
+.price-paid{color:#ef4444;font-weight:600}
+.price-freemium{color:#f59e0b;font-weight:600}
+.highlight{background:#fef9c3}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{padding:4px 12px;border-radius:16px;font-size:11px;font-weight:500;background:#f3f0ff;color:#6366f1}
+.desc{font-size:13px;color:#555;line-height:1.6}
+.try-btn{display:block;text-align:center;margin-top:auto;padding:12px;border-radius:20px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;font-size:14px;font-weight:600;text-decoration:none;box-shadow:0 2px 8px rgba(99,102,241,.25);transition:all .2s}
+.try-btn:hover{box-shadow:0 4px 14px rgba(99,102,241,.35);transform:translateY(-1px)}
+.empty{text-align:center;color:#999;padding:60px 20px;font-size:16px}
+</style>
+</head>
+<body>
+<header>
+  <a href="index.html" class="logo">ChoosingYourAI</a>
+  <a href="index.html" class="back">← Back to Tools</a>
+</header>
+<div class="container">
+  <h1>Compare AI Tools</h1>
+  <div class="compare-grid" id="grid"></div>
+</div>
+
+<script src="tools.js"></script>
+<script>
+const params = new URLSearchParams(location.search);
+const names = params.getAll('t');
+const selected = names.map(n => tools.find(t => t.name === n)).filter(Boolean);
+
+if (selected.length < 2) {
+  document.getElementById('grid').innerHTML = '<p class="empty">Select 2-3 tools from the main page to compare.</p>';
+} else {
+  // Find best values for highlighting
+  const bestRating = Math.max(...selected.map(t => t.rating));
+  const bestReviews = Math.max(...selected.map(t => t.reviews));
+  const priceRank = {Free:0,Freemium:1,Paid:2};
+  const bestPrice = Math.min(...selected.map(t => priceRank[t.price||'Freemium']));
+
+  const s = r => { let o=''; for(let i=1;i<=5;i++) o+=i<=Math.floor(r)?'★':(i-.5<=r?'★':'☆'); return o; };
+  const pc = p => p==='Free'?'price-free':p==='Paid'?'price-paid':'price-freemium';
+
+  document.getElementById('grid').innerHTML = selected.map(t => {
+    const p = t.price || 'Freemium';
+    return `
+    <div class="col">
+      <button class="remove-btn" onclick="removeTool('${t.name.replace(/'/g,"\\'")}')" title="Remove">&times;</button>
+      <div class="col-name">${t.name}</div>
+
+      <div class="row">
+        <div class="row-label">Rating</div>
+        <div class="row-value ${t.rating===bestRating?'highlight':''}">
+          <span class="stars">${s(t.rating)}</span> ${t.rating} / 5
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="row-label">Reviews</div>
+        <div class="row-value ${t.reviews===bestReviews?'highlight':''}">${t.reviews.toLocaleString()} reviews</div>
+      </div>
+
+      <div class="row">
+        <div class="row-label">Price</div>
+        <div class="row-value ${priceRank[p]===bestPrice?'highlight':''}"><span class="${pc(p)}">${p}</span></div>
+      </div>
+
+      <div class="row">
+        <div class="row-label">Categories</div>
+        <div class="tags">${t.tags.map(tag=>`<span class="tag">${tag}</span>`).join('')}</div>
+      </div>
+
+      <div class="row">
+        <div class="row-label">Description</div>
+        <p class="desc">${t.desc}</p>
+      </div>
+
+      <a href="https://www.google.com/search?q=${encodeURIComponent(t.name+' AI tool official site')}" target="_blank" rel="noopener" class="try-btn">Try ${t.name} ↗</a>
+    </div>`;
+  }).join('');
+}
+
+function removeTool(name) {
+  const remaining = names.filter(n => n !== name);
+  if (remaining.length < 2) { location.href = 'index.html'; return; }
+  location.href = 'compare.html?' + remaining.map(n => 't=' + encodeURIComponent(n)).join('&');
+}
+</script>
+</body>
+</html>
