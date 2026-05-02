@@ -23,8 +23,8 @@ header { background: rgba(255,255,255,.85); backdrop-filter: blur(12px); border-
 .filters { display: flex; gap: 8px; align-items: center; }
 .filter-btn { padding: 8px 18px; border: 1px solid #e2e0ec; border-radius: 20px; background: #fff; font-size: 13px; font-weight: 500; cursor: pointer; transition: all .2s; color: #555; }
 .filter-btn:hover { border-color: #a78bfa; color: #6366f1; background: #f8f5ff; }
-.sort-btn { margin-left: auto; padding: 8px 20px; border-radius: 20px; background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; border: none; font-size: 13px; font-weight: 500; cursor: pointer; transition: all .2s; box-shadow: 0 2px 8px rgba(99,102,241,.25); }
-.sort-btn:hover { box-shadow: 0 4px 14px rgba(99,102,241,.35); transform: translateY(-1px); }
+.sort-btn { margin-left: auto; padding: 8px 18px; border-radius: 20px; background: #fff; color: #555; border: 1px solid #e2e0ec; font-size: 13px; font-weight: 500; cursor: pointer; transition: all .2s; }
+.sort-btn:hover { border-color: #a78bfa; color: #6366f1; background: #f8f5ff; }
 
 /* Dropdown */
 .dropdown { position: relative; z-index: 1000; }
@@ -72,6 +72,12 @@ header { background: rgba(255,255,255,.85); backdrop-filter: blur(12px); border-
 .compare-bar-actions { display: flex; gap: 10px; }
 .compare-go { padding: 10px 24px; border-radius: 20px; background: linear-gradient(135deg,#6366f1,#8b5cf6); color: #fff; border: none; font-size: 13px; font-weight: 600; cursor: pointer; box-shadow: 0 2px 8px rgba(99,102,241,.25); }
 .compare-clear { padding: 10px 18px; border-radius: 20px; border: 1px solid #e2e0ec; background: #fff; font-size: 13px; color: #555; cursor: pointer; }
+
+/* Footer */
+footer { background: #fff; border-top: 1px solid rgba(99,102,241,.08); padding: 24px 32px; text-align: center; margin-top: 40px; }
+footer a { color: #6366f1; text-decoration: none; font-size: 13px; font-weight: 500; margin: 0 12px; }
+footer a:hover { text-decoration: underline; }
+footer .copy { font-size: 12px; color: #999; margin-top: 10px; }
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -82,10 +88,6 @@ header { background: rgba(255,255,255,.85); backdrop-filter: blur(12px); border-
   <div class="logo">ChoosingYourAI</div>
   <input class="search-bar" type="text" placeholder="Search AI tools..." id="search">
   <nav class="header-nav">
-    <button class="nav-pill active">Discover</button>
-    <button class="nav-pill">Categories</button>
-    <button class="nav-pill">Compare</button>
-    <button class="nav-pill">About</button>
   </nav>
 </header>
 
@@ -102,6 +104,13 @@ header { background: rgba(255,255,255,.85); backdrop-filter: blur(12px); border-
 </div>
 
 <main class="grid" id="grid"></main>
+
+<footer>
+  <a href="#">About</a>
+  <a href="#">Privacy Policy</a>
+  <a href="#">Contact</a>
+  <p class="copy">© 2026 ChoosingYourAI. All rights reserved.</p>
+</footer>
 
 <div class="compare-bar" id="compareBar">
   <div class="compare-chips" id="compareChips"></div>
@@ -191,13 +200,6 @@ function filterAndRender() {
 
 document.getElementById('search').addEventListener('input', filterAndRender);
 document.getElementById('sortBtn').addEventListener('click', () => renderCards([...tools].sort((a,b) => b.rating - a.rating)));
-
-document.querySelectorAll('.nav-pill').forEach(pill => {
-  pill.addEventListener('click', () => {
-    document.querySelectorAll('.nav-pill').forEach(p => p.classList.remove('active'));
-    pill.classList.add('active');
-  });
-});
 
 // Compare
 const compareList = [];
