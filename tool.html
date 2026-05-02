@@ -160,12 +160,28 @@ if (!tool) {
 } else {
   document.title = tool.name + ' — ChoosingYourAI';
   const s = r => { let o=''; for(let i=1;i<=5;i++) o+=i<=Math.floor(r)?'★':(i-.5<=r?'★':'☆'); return o; };
-  document.getElementById('hero').innerHTML = `
-    <h1>${tool.name}</h1>
-    <div class="meta"><span class="stars">${s(tool.rating)}</span><span>${tool.rating} / 5</span><span>(${tool.reviews.toLocaleString()} reviews)</span><span>👁 ${tool.views} views</span></div>
-    <div class="tags">${tool.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
-    <p class="desc">${tool.desc}</p>
-    <a href="https://www.google.com/search?q=${encodeURIComponent(tool.name+' AI tool official site')}" target="_blank" rel="noopener" class="try-btn">Try ${tool.name} ↗</a>`;
+
+  async function renderHero() {
+    let count = 0, avg = null;
+    try {
+      const snap = await db.collection('reviews').where('tool','==',toolName).get();
+      count = snap.size;
+      if (count > 0) {
+        const total = snap.docs.reduce((sum,doc) => sum + (doc.data().rating||0), 0);
+        avg = (total / count).toFixed(1);
+      }
+    } catch(e) {}
+    const metaHTML = avg
+      ? `<span class="stars">${s(parseFloat(avg))}</span><span>${avg} / 5</span><span>(${count} review${count!==1?'s':''})</span>`
+      : `<span style="color:#999">No reviews yet — be the first!</span>`;
+    document.getElementById('hero').innerHTML = `
+      <h1>${tool.name}</h1>
+      <div class="meta">${metaHTML}</div>
+      <div class="tags">${tool.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+      <p class="desc">${tool.desc}</p>
+      <a href="https://www.google.com/search?q=${encodeURIComponent(tool.name+' AI tool official site')}" target="_blank" rel="noopener" class="try-btn">Try ${tool.name} ↗</a>`;
+  }
+  renderHero();
 }
 
 // Auth UI
@@ -255,7 +271,7 @@ document.getElementById('submitBtn').addEventListener('click', async () => {
   selectedRating = 0;
   document.getElementById('starSelect').querySelectorAll('span').forEach(s => { s.textContent = '☆'; s.classList.remove('active'); });
   loadReviews();
-});
+  if (typeof renderHero === 'function') renderHero();});
 
 // Load reviews
 async function loadReviews() {
