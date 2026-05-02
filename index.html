@@ -41,7 +41,8 @@ header { background: rgba(255,255,255,.85); backdrop-filter: blur(12px); border-
 .card { background: #fff; border: 1px solid rgba(99,102,241,.08); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; transition: all .25s ease; position: relative; box-shadow: 0 2px 12px rgba(99,102,241,.05); cursor: pointer; text-decoration: none; color: inherit; }
 .card:hover { box-shadow: 0 8px 30px rgba(99,102,241,.12); transform: translateY(-2px); }
 .card-top { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 16px; }
-.card-icon { width: 56px; height: 56px; border-radius: 14px; border: 1px solid #e8e5ef; display: flex; align-items: center; justify-content: center; font-size: 28px; flex-shrink: 0; background: #f8f7fc; }
+.card-icon { width: 56px; height: 56px; border-radius: 14px; border: 1px solid #e8e5ef; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: #f8f7fc; overflow: hidden; }
+.card-icon img { width: 40px; height: 40px; object-fit: contain; }
 .card-info { flex: 1; }
 .card-title { font-size: 18px; font-weight: 700; color: #1a1a2e; margin-bottom: 6px; }
 .rating-row { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #777; }
@@ -119,6 +120,7 @@ footer .copy { font-size: 12px; color: #999; margin-top: 10px; }
 </div>
 
 <script src="tools.js"></script>
+<script src="domains.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script>
@@ -154,6 +156,10 @@ function renderCards(list) {
   document.getElementById('grid').innerHTML = list.map(t => {
     const url = `tool.html?t=${encodeURIComponent(t.name)}`;
     const icon = toolIcons[t.name] || '🤖';
+    const domain = (typeof toolDomains!=='undefined' && toolDomains[t.name]) || '';
+    const logoHTML = domain
+      ? `<img src="https://www.google.com/s2/favicons?domain=${domain}&sz=128" alt="${t.name}" onerror="this.outerHTML='${icon}'">`
+      : icon;
     const stats = reviewStats[t.name];
     const count = stats ? stats.count : 0;
     const avg = stats ? (stats.total / stats.count).toFixed(1) : null;
@@ -166,7 +172,7 @@ function renderCards(list) {
     return `
     <a href="${url}" class="card">
       <div class="card-top">
-        <div class="card-icon">${icon}</div>
+        <div class="card-icon">${logoHTML}</div>
         <div class="card-info">
           <div class="card-title">${t.name}</div>
           <div class="rating-row">${ratingHTML}</div>
