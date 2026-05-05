@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI for Coding — Top 5 Tools (2026) | ChoosingYourAI</title>
+<meta name="description" content="Compare the top 5 AI coding tools in 2026. Real data, market share, and prompts to try. GitHub Copilot, Cursor, Claude Code, Codeium/Windsurf, Tabnine.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(160deg,#f8f9fb 0%,#f3f0f8 40%,#eef0fa 100%);color:#1a1a2e;min-height:100vh}
+header{background:rgba(255,255,255,.85);backdrop-filter:blur(12px);border-bottom:1px solid rgba(99,102,241,.08);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.logo{font-size:26px;font-weight:800;background:linear-gradient(135deg,#6366f1,#a855f7,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-.5px;text-decoration:none}
+.back{padding:8px 18px;border-radius:20px;border:1px solid #e2e0ec;background:#fff;font-size:13px;font-weight:500;color:#555;text-decoration:none;transition:all .2s}
+.back:hover{border-color:#a78bfa;color:#6366f1;background:#f8f5ff}
+.container{max-width:860px;margin:0 auto;padding:32px 24px}
+.hero{text-align:center;margin-bottom:36px}
+.hero-icon{font-size:48px;margin-bottom:12px}
+.hero h1{font-size:32px;font-weight:800;margin-bottom:10px}
+.hero p{font-size:16px;color:#666;line-height:1.6;max-width:640px;margin:0 auto}
+.updated{font-size:12px;color:#999;margin-top:8px}
+
+/* Market context */
+.market-box{background:#fff;border:1px solid rgba(99,102,241,.08);border-radius:14px;padding:20px 24px;margin-bottom:32px;box-shadow:0 2px 8px rgba(99,102,241,.04)}
+.market-box h3{font-size:15px;font-weight:700;margin-bottom:10px}
+.market-box p{font-size:13.5px;color:#555;line-height:1.7}
+.market-box .stat{font-weight:700;color:#6366f1}
+
+/* Tool card */
+.tool-rank{background:#fff;border:1px solid rgba(99,102,241,.08);border-radius:16px;padding:28px;margin-bottom:20px;box-shadow:0 2px 12px rgba(99,102,241,.05)}
+.tool-rank:hover{box-shadow:0 4px 20px rgba(99,102,241,.1)}
+.rank-header{display:flex;align-items:center;gap:16px;margin-bottom:16px}
+.rank-num{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;flex-shrink:0}
+.rank-icon{width:48px;height:48px;border-radius:12px;border:1px solid #e8e5ef;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#f8f7fc;flex-shrink:0}
+.rank-icon img{width:36px;height:36px;object-fit:contain}
+.rank-info h2{font-size:20px;font-weight:700;margin-bottom:2px}
+.rank-info .subtitle{font-size:13px;color:#777}
+.why{font-size:14px;color:#555;line-height:1.7;margin-bottom:16px}
+.why strong{color:#1a1a2e}
+.pros-cons{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.pros,.cons{padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7}
+.pros{background:#ecfdf5;color:#065f46}
+.cons{background:#fef2f2;color:#991b1b}
+.pros-title,.cons-title{font-weight:700;margin-bottom:4px}
+.key-stats{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px}
+.key-stat{padding:5px 14px;border-radius:16px;font-size:12px;font-weight:600;background:#f3f0ff;color:#6366f1}
+.source{font-size:11px;color:#999;margin-top:8px}
+.source a{color:#6366f1;text-decoration:none}
+.source a:hover{text-decoration:underline}
+.try-btn{display:inline-block;padding:10px 22px;border-radius:20px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;font-size:13px;font-weight:600;text-decoration:none;box-shadow:0 2px 8px rgba(99,102,241,.2);transition:all .2s}
+.try-btn:hover{box-shadow:0 4px 14px rgba(99,102,241,.3);transform:translateY(-1px)}
+
+/* Prompts */
+.prompts-section{margin-top:36px;margin-bottom:36px}
+.prompts-section h2{font-size:20px;font-weight:700;margin-bottom:16px}
+.prompt-card{background:#fff;border:1px solid rgba(99,102,241,.08);border-radius:14px;padding:18px 20px;margin-bottom:12px;box-shadow:0 2px 8px rgba(99,102,241,.04)}
+.prompt-text{font-size:14px;color:#333;line-height:1.6;margin-bottom:10px;font-style:italic}
+.prompt-footer{display:flex;align-items:center;justify-content:space-between}
+.prompt-tool{font-size:12px;font-weight:600;color:#6366f1;background:#f3f0ff;padding:4px 12px;border-radius:12px}
+.copy-btn{padding:5px 14px;border-radius:12px;border:1px solid #e2e0ec;background:#fff;font-size:12px;cursor:pointer;color:#555;transition:all .2s}
+.copy-btn:hover{border-color:#6366f1;color:#6366f1}
+.copy-btn.copied{border-color:#10b981;color:#10b981;background:#ecfdf5}
+
+footer{background:#fff;border-top:1px solid rgba(99,102,241,.08);padding:24px 32px;text-align:center;margin-top:40px}
+footer a{color:#6366f1;text-decoration:none;font-size:13px;font-weight:500;margin:0 12px}
+footer .copy{font-size:12px;color:#999;margin-top:10px}
+
+@media(max-width:600px){.pros-cons{grid-template-columns:1fr}.rank-header{flex-wrap:wrap}}
+</style>
+</head>
+<body>
+<header>
+  <a href="index.html" class="logo">ChoosingYourAI</a>
+  <a href="index.html" class="back">← Back to All Tools</a>
+</header>
+
+<div class="container">
+  <div class="hero">
+    <div class="hero-icon">💻</div>
+    <h1>Top 5 AI Coding Tools (2026)</h1>
+    <p>Data-backed rankings of the best AI coding assistants. Based on market share, revenue, user adoption, and developer satisfaction surveys.</p>
+    <p class="updated">Last updated: May 2026</p>
+  </div>
+
+  <div class="market-box">
+    <h3>📊 Market Context</h3>
+    <p>The AI coding tools market reached an estimated <span class="stat">$8.5–12.8 billion</span> in 2026. Around <span class="stat">90% of developers</span> now use at least one AI tool for coding. Cursor holds <span class="stat">31% usage share</span>, GitHub Copilot <span class="stat">24%</span>, and Claude Code <span class="stat">22%</span> according to recent market data.</p>
+    <p class="source">Sources: <a href="https://dataku.ai/blog/ai-coding-tools-2026-market-share-data" target="_blank">Dataku AI Market Share 2026</a>, <a href="https://www.linos.ai/technology/best-ai-coding-tools-2026-tested-ranked-cursor-copilot-claude-code/" target="_blank">Linos AI 2026</a></p>
+  </div>
+
+  <!-- #1 Cursor -->
+  <div class="tool-rank">
+    <div class="rank-header">
+      <div class="rank-num">1</div>
+      <div class="rank-icon"><img src="https://www.google.com/s2/favicons?domain=cursor.com&sz=128" alt="Cursor"></div>
+      <div class="rank-info">
+        <h2>Cursor</h2>
+        <div class="subtitle">By Anysphere · AI-first code editor</div>
+      </div>
+    </div>
+    <p class="why"><strong>Why it leads:</strong> Cursor grew from $100M to $2B in annualized revenue in just 14 months — the fastest SaaS growth in tech history. It surpassed 1 million daily active users by December 2025 and powers over 50,000 businesses. Its full-codebase awareness and agent-mode editing set it apart from autocomplete-only tools.</p>
+    <div class="key-stats">
+      <span class="key-stat">$2B+ ARR (2026)</span>
+      <span class="key-stat">1M+ daily users</span>
+      <span class="key-stat">31% market share</span>
+      <span class="key-stat">$50B valuation</span>
+    </div>
+    <div class="pros-cons">
+      <div class="pros"><div class="pros-title">✅ Pros</div>Full codebase context<br>Agent mode for multi-file edits<br>Built on VS Code (familiar)<br>Fast iteration speed</div>
+      <div class="cons"><div class="cons-title">❌ Cons</div>$20/month Pro plan<br>Newer ecosystem<br>Some users report pricing changes<br>Requires internet connection</div>
+    </div>
+    <a href="https://cursor.com" target="_blank" rel="noopener" class="try-btn">Try Cursor ↗</a>
+    <p class="source">Sources: <a href="https://research.contrary.com/company/anysphere" target="_blank">Contrary Research</a>, <a href="https://techcrunch.com/2026/04/17/sources-cursor-in-talks-to-raise-2b-at-50b-valuation-as-enterprise-growth-surges/" target="_blank">TechCrunch Apr 2026</a>, <a href="https://www.gradually.ai/en/cursor-statistics/" target="_blank">Gradually.ai Statistics</a></p>
+  </div>
+
+  <!-- #2 GitHub Copilot -->
+  <div class="tool-rank">
+    <div class="rank-header">
+      <div class="rank-num">2</div>
+      <div class="rank-icon"><img src="https://www.google.com/s2/favicons?domain=github.com&sz=128" alt="GitHub Copilot"></div>
+      <div class="rank-info">
+        <h2>GitHub Copilot</h2>
+        <div class="subtitle">By GitHub/Microsoft · AI pair programmer</div>
+      </div>
+    </div>
+    <p class="why"><strong>Why it leads:</strong> GitHub Copilot remains the most widely adopted AI coding tool with over 20 million paid users and 4.7 million paid subscribers. Used by 90% of Fortune 100 companies, it benefits from deep Microsoft/GitHub ecosystem integration and enterprise procurement advantages.</p>
+    <div class="key-stats">
+      <span class="key-stat">20M+ paid users</span>
+      <span class="key-stat">4.7M subscribers</span>
+      <span class="key-stat">90% Fortune 100</span>
+      <span class="key-stat">24% market share</span>
+    </div>
+    <div class="pros-cons">
+      <div class="pros"><div class="pros-title">✅ Pros</div>Largest user base<br>Deep IDE integration (VS Code, JetBrains)<br>Enterprise trust & compliance<br>Free for students & OSS</div>
+      <div class="cons"><div class="cons-title">❌ Cons</div>$10-19/month<br>Lower developer satisfaction vs competitors<br>Less agentic capability<br>Requires GitHub ecosystem</div>
+    </div>
+    <a href="https://github.com/features/copilot" target="_blank" rel="noopener" class="try-btn">Try GitHub Copilot ↗</a>
+    <p class="source">Sources: <a href="https://techcrunch.com/2026/04/29/microsoft-says-it-has-over-20m-paid-copilot-users-and-they-really-are-using-it/" target="_blank">TechCrunch Apr 2026</a>, <a href="https://getpanto.ai/blog/github-copilot-statistics" target="_blank">Panto Statistics</a>, <a href="https://www.affiliatebooster.com/github-copilot-statistics/" target="_blank">AffiliateBooster</a></p>
+  </div>
+
+  <!-- #3 Claude Code -->
+  <div class="tool-rank">
+    <div class="rank-header">
+      <div class="rank-num">3</div>
+      <div class="rank-icon"><img src="https://www.google.com/s2/favicons?domain=anthropic.com&sz=128" alt="Claude Code"></div>
+      <div class="rank-info">
+        <h2>Claude Code</h2>
+        <div class="subtitle">By Anthropic · Agentic coding assistant</div>
+      </div>
+    </div>
+    <p class="why"><strong>Why it leads:</strong> Claude Code jumped to 22% usage share and was voted the most-loved AI coding tool in JetBrains' April 2026 survey (46% satisfaction vs Cursor at 19% and Copilot at 9%). It scored over 80% on SWE-bench Verified, excelling at complex multi-step coding tasks and agentic workflows.</p>
+    <div class="key-stats">
+      <span class="key-stat">22% usage share</span>
+      <span class="key-stat">46% most-loved (JetBrains)</span>
+      <span class="key-stat">80%+ SWE-bench</span>
+      <span class="key-stat">Terminal-native</span>
+    </div>
+    <div class="pros-cons">
+      <div class="pros"><div class="pros-title">✅ Pros</div>Best for complex/agentic tasks<br>Highest developer satisfaction<br>Excellent reasoning ability<br>200K token context window</div>
+      <div class="cons"><div class="cons-title">❌ Cons</div>Terminal-based (no IDE plugin yet)<br>Usage-based pricing can be expensive<br>Newer, smaller ecosystem<br>Requires Anthropic API access</div>
+    </div>
+    <a href="https://anthropic.com" target="_blank" rel="noopener" class="try-btn">Try Claude Code ↗</a>
+    <p class="source">Sources: <a href="https://dataku.ai/blog/ai-coding-tools-2026-market-share-data" target="_blank">Dataku AI 2026</a>, <a href="https://www.ideaplan.io/blog/ai-coding-assistant-market-share-2026" target="_blank">Ideaplan Market Share 2026</a></p>
+  </div>
+
+  <!-- #4 Codeium/Windsurf -->
+  <div class="tool-rank">
+    <div class="rank-header">
+      <div class="rank-num">4</div>
+      <div class="rank-icon"><img src="https://www.google.com/s2/favicons?domain=windsurf.com&sz=128" alt="Windsurf"></div>
+      <div class="rank-info">
+        <h2>Codeium / Windsurf</h2>
+        <div class="subtitle">By Exafunction · Free AI coding IDE</div>
+      </div>
+    </div>
+    <p class="why"><strong>Why it leads:</strong> Codeium (now rebranded as Windsurf) grew from 10,000 users in 2023 to over 800,000 active developers by early 2025. Its generous free tier and support for 70+ languages make it the top choice for developers who want AI assistance without paying. Windsurf's usage share grew from 2% to 8% in six months.</p>
+    <div class="key-stats">
+      <span class="key-stat">800K+ developers</span>
+      <span class="key-stat">70+ languages</span>
+      <span class="key-stat">8% market share (growing)</span>
+      <span class="key-stat">Free tier available</span>
+    </div>
+    <div class="pros-cons">
+      <div class="pros"><div class="pros-title">✅ Pros</div>Generous free tier<br>70+ language support<br>Fast local suggestions<br>Growing rapidly</div>
+      <div class="cons"><div class="cons-title">❌ Cons</div>Struggles with complex architecture<br>Smaller community than Copilot<br>Brand confusion (Codeium → Windsurf)<br>Less enterprise adoption</div>
+    </div>
+    <a href="https://windsurf.com" target="_blank" rel="noopener" class="try-btn">Try Windsurf ↗</a>
+    <p class="source">Sources: <a href="https://sacra.com/c/codeium" target="_blank">Sacra Research</a>, <a href="https://dataku.ai/blog/ai-coding-tools-2026-market-share-data" target="_blank">Dataku AI 2026</a>, <a href="https://www.cracked.ai/tool-review/ai-coding/codeium-review" target="_blank">Cracked.ai Review</a></p>
+  </div>
+
+  <!-- #5 Tabnine -->
+  <div class="tool-rank">
+    <div class="rank-header">
+      <div class="rank-num">5</div>
+      <div class="rank-icon"><img src="https://www.google.com/s2/favicons?domain=tabnine.com&sz=128" alt="Tabnine"></div>
+      <div class="rank-info">
+        <h2>Tabnine</h2>
+        <div class="subtitle">By Tabnine · Privacy-first enterprise AI</div>
+      </div>
+    </div>
+    <p class="why"><strong>Why it leads:</strong> Tabnine is the go-to choice for enterprises that cannot send code to external servers. It offers air-gapped, VPC, and on-premises deployment — capabilities no competitor matches. With SOC 2 Type 2, GDPR, and ISO 27001 compliance since 2017, it serves regulated industries like defense, finance, and healthcare.</p>
+    <div class="key-stats">
+      <span class="key-stat">Air-gapped deployment</span>
+      <span class="key-stat">SOC 2 + GDPR + ISO 27001</span>
+      <span class="key-stat">Since 2017</span>
+      <span class="key-stat">On-premises option</span>
+    </div>
+    <div class="pros-cons">
+      <div class="pros"><div class="pros-title">✅ Pros</div>Best privacy/compliance story<br>On-prem & air-gapped options<br>Zero code retention<br>Enterprise governance features</div>
+      <div class="cons"><div class="cons-title">❌ Cons</div>$59/user/month (enterprise)<br>Less capable than Cursor/Claude<br>Smaller community<br>Less agentic features</div>
+    </div>
+    <a href="https://tabnine.com" target="_blank" rel="noopener" class="try-btn">Try Tabnine ↗</a>
+    <p class="source">Sources: <a href="https://skywork.ai/blog/tabnine-review-2025-features-security-pricing/" target="_blank">Skywork Review 2025</a>, <a href="https://vibecoding.app/blog/tabnine-review" target="_blank">VibeCoding Review</a></p>
+  </div>
+
+  <!-- Prompts -->
+  <div class="prompts-section">
+    <h2>💡 Prompts to Try Right Now</h2>
+    <div class="prompt-card">
+      <p class="prompt-text">"Write a Python function that reads a CSV file, handles missing values, and returns the top 5 rows sorted by a given column."</p>
+      <div class="prompt-footer"><span class="prompt-tool">Best with: Cursor</span><button class="copy-btn" onclick="copyPrompt(this,0)">📋 Copy</button></div>
+    </div>
+    <div class="prompt-card">
+      <p class="prompt-text">"Debug this code and explain the root cause of the TypeError. Then fix it and add error handling."</p>
+      <div class="prompt-footer"><span class="prompt-tool">Best with: Claude Code</span><button class="copy-btn" onclick="copyPrompt(this,1)">📋 Copy</button></div>
+    </div>
+    <div class="prompt-card">
+      <p class="prompt-text">"Refactor this React component to use TypeScript, add proper types, and split it into smaller reusable components."</p>
+      <div class="prompt-footer"><span class="prompt-tool">Best with: Cursor</span><button class="copy-btn" onclick="copyPrompt(this,2)">📋 Copy</button></div>
+    </div>
+    <div class="prompt-card">
+      <p class="prompt-text">"Write comprehensive unit tests for this Express.js API endpoint using Jest, covering edge cases and error scenarios."</p>
+      <div class="prompt-footer"><span class="prompt-tool">Best with: GitHub Copilot</span><button class="copy-btn" onclick="copyPrompt(this,3)">📋 Copy</button></div>
+    </div>
+    <div class="prompt-card">
+      <p class="prompt-text">"Explain this SQL query in plain English, identify performance bottlenecks, and rewrite it with proper indexing suggestions."</p>
+      <div class="prompt-footer"><span class="prompt-tool">Best with: Claude Code</span><button class="copy-btn" onclick="copyPrompt(this,4)">📋 Copy</button></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <a href="index.html">Home</a>
+  <a href="#">About</a>
+  <a href="#">Privacy Policy</a>
+  <a href="#">Contact</a>
+  <p class="copy">© 2026 ChoosingYourAI. All rights reserved.</p>
+</footer>
+
+<script>
+const prompts = [
+  "Write a Python function that reads a CSV file, handles missing values, and returns the top 5 rows sorted by a given column.",
+  "Debug this code and explain the root cause of the TypeError. Then fix it and add error handling.",
+  "Refactor this React component to use TypeScript, add proper types, and split it into smaller reusable components.",
+  "Write comprehensive unit tests for this Express.js API endpoint using Jest, covering edge cases and error scenarios.",
+  "Explain this SQL query in plain English, identify performance bottlenecks, and rewrite it with proper indexing suggestions."
+];
+function copyPrompt(btn, idx) {
+  navigator.clipboard.writeText(prompts[idx]).then(() => {
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '📋 Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+</script>
+</body>
+</html>

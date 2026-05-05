@@ -39,6 +39,7 @@ const usecases = [
     id:"coding",icon:"💻",title:"AI for Coding",
     desc:"Write, debug, and optimize code faster with AI-powered developer tools.",
     tags:["Coding & Developer Tools"],
+    link:"coding.html",
     prompts:[
       {text:"Write a Python function that reads a CSV file and returns the top 5 rows sorted by a given column.",tool:"GitHub Copilot"},
       {text:"Debug this JavaScript code and explain what's causing the TypeError: [paste code]",tool:"ChatGPT"},

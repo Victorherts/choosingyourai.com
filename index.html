@@ -213,10 +213,10 @@ async function loadAllReviewStats() {
 
 // Use case tiles & nav
 document.getElementById('ucTiles').innerHTML = usecases.map(u =>
-  `<a href="usecase.html?c=${u.id}" class="uc-tile"><span class="uc-emoji">${u.icon}</span>${u.title}</a>`
+  `<a href="${u.link||'usecase.html?c='+u.id}" class="uc-tile"><span class="uc-emoji">${u.icon}</span>${u.title}</a>`
 ).join('');
 document.getElementById('ucMenu').innerHTML = usecases.map(u =>
-  `<a href="usecase.html?c=${u.id}" class="uc-item"><span>${u.icon}</span>${u.title}</a>`
+  `<a href="${u.link||'usecase.html?c='+u.id}" class="uc-item"><span>${u.icon}</span>${u.title}</a>`
 ).join('');
 document.getElementById('ucBtn').addEventListener('click', e => { e.stopPropagation(); document.getElementById('ucMenu').classList.toggle('open'); });
 document.addEventListener('click', () => { document.getElementById('ucMenu').classList.remove('open'); });
