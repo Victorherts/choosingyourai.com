@@ -67,6 +67,7 @@ const usecases = [
     id:"students",icon:"🎓",title:"AI for Students",
     desc:"Study smarter, get homework help, and learn new concepts with AI tutoring tools.",
     tags:["Education & Study Tools"],
+    link:"students.html",
     prompts:[
       {text:"Explain quantum entanglement in simple terms a high school student would understand.",tool:"ChatGPT"},
       {text:"Create flashcards for the key concepts in Chapter 5 of my biology textbook: [paste notes]",tool:"Quizlet AI"},
