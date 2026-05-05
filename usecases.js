@@ -80,6 +80,7 @@ const usecases = [
     id:"design",icon:"🎨",title:"AI for Image & Design",
     desc:"Generate images, create logos, design marketing materials, and bring your visual ideas to life.",
     tags:["Image Generation & Design"],
+    link:"design.html",
     prompts:[
       {text:"Generate a minimalist logo for a coffee shop called 'Morning Brew' with warm earth tones.",tool:"Midjourney"},
       {text:"Create a social media banner for a tech startup launch event, modern and clean style.",tool:"Canva AI"},
