@@ -27,6 +27,7 @@ const usecases = [
     id:"writing",icon:"✍️",title:"AI for Writing",
     desc:"Create blog posts, articles, stories, and any written content faster with AI writing tools.",
     tags:["Writing & Content Creation","Marketing & SEO"],
+    link:"writing.html",
     prompts:[
       {text:"Write a 1000-word blog post about the benefits of remote work for software developers.",tool:"Jasper AI"},
       {text:"Generate 20 engaging blog title ideas about artificial intelligence trends in 2026.",tool:"ChatGPT"},
