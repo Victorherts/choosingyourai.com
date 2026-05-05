@@ -3,6 +3,7 @@ const usecases = [
     id:"cv-career",icon:"📄",title:"AI for CV & Career",
     desc:"Build standout resumes, prepare for interviews, and accelerate your job search with AI tools.",
     tags:["Writing & Content Creation","Jobs, CV & Career Tools","Productivity & Automation"],
+    link:"cv-career.html",
     prompts:[
       {text:"Write a professional summary for a software engineer with 5 years of experience in Python and cloud computing.",tool:"ChatGPT"},
       {text:"Rewrite my resume bullet points to include measurable achievements and action verbs.",tool:"Grammarly"},
