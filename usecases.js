@@ -54,6 +54,7 @@ const usecases = [
     id:"business",icon:"💼",title:"AI for Business",
     desc:"Automate workflows, analyze data, create presentations, and boost team productivity.",
     tags:["Productivity & Automation","Marketing & SEO"],
+    link:"business.html",
     prompts:[
       {text:"Create a SWOT analysis for a SaaS startup entering the project management market.",tool:"ChatGPT"},
       {text:"Generate a 10-slide pitch deck outline for a Series A fundraising round.",tool:"Tome"},
