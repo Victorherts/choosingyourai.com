@@ -16,6 +16,7 @@ const usecases = [
     id:"emails",icon:"📧",title:"AI for Emails & Communication",
     desc:"Write professional emails, respond faster, and communicate clearly with AI assistance.",
     tags:["Writing & Content Creation","Productivity & Automation"],
+    link:"emails.html",
     prompts:[
       {text:"Write a polite follow-up email after a job interview thanking the interviewer.",tool:"ChatGPT"},
       {text:"Rewrite this email to sound more professional and concise: [paste email]",tool:"Grammarly"},
@@ -93,6 +94,7 @@ const usecases = [
     id:"legal",icon:"⚖️",title:"AI for Legal",
     desc:"Draft contracts, review documents, and research legal topics with AI assistance.",
     tags:["Writing & Content Creation","Productivity & Automation"],
+    link:"legal.html",
     disclaimer:"⚠️ These tools are for informational and drafting purposes only. They do not constitute legal advice. Always consult a qualified attorney for legal matters.",
     prompts:[
       {text:"Draft a basic freelance contract template including payment terms and intellectual property clauses.",tool:"ChatGPT"},
@@ -106,6 +108,7 @@ const usecases = [
     id:"health",icon:"🏥",title:"AI for Health & Wellness",
     desc:"Explore health information, plan fitness routines, and track wellness goals with AI tools.",
     tags:["Chatbots & Conversational AI","Productivity & Automation"],
+    link:"health.html",
     disclaimer:"⚠️ These tools provide general wellness information only. They are not a substitute for professional medical advice, diagnosis, or treatment. Always consult a healthcare provider for medical concerns.",
     prompts:[
       {text:"Create a 4-week beginner workout plan for someone who wants to build strength at home.",tool:"ChatGPT"},
